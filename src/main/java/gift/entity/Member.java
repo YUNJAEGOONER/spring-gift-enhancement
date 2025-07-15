@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,17 +29,12 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Role role = Role.USER; //회원 가입 -> 일반 회원
 
+    @OneToMany(mappedBy = "member")
+    private List<WishList> wishLists = new ArrayList<>();
 
     public void changeInfo(String email, String password){
         this.email = email;
         this.password = password;
-    }
-
-    public Member(Long memberId, String email, String password, Role role){
-        this.memberId = memberId;
-        this.email = email;
-        this.password = password;
-        this.role = role;
     }
 
     public Member(String email, String password){
@@ -62,5 +58,9 @@ public class Member {
 
     public Role getRole() {
         return role;
+    }
+
+    public List<WishList> getWishLists() {
+        return wishLists;
     }
 }

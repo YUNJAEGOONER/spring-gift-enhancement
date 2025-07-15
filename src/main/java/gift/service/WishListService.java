@@ -2,6 +2,7 @@ package gift.service;
 
 import gift.dto.wish.WishRequestDto;
 import gift.dto.wish.WishResponseDto;
+import gift.entity.Member;
 import gift.entity.Product;
 import gift.entity.WishList;
 import gift.repository.ProductRepository;
@@ -25,12 +26,10 @@ public class WishListService {
     }
 
     //단일 WishResponseDto가
-    public WishResponseDto addToWishList(Long memberId, WishRequestDto requestDto) {
+    public WishResponseDto addToWishList(Member member, WishRequestDto requestDto) {
         //이미 장바구니에 해당 상품이 있는 경우에는 수량만 업데이트
-        Optional<WishList> wishListOptional = wishListRepository.findWishListByMemberIdAndProductId(
-                memberId, requestDto.productId());
         Product product = productRepository.findProductById(requestDto.productId()).get();
-
+        Optional<WishList> wishListOptional = wishListRepository.findWishListByMemberAndProduct(member, product);
         if (wishListOptional.isPresent()) {
             //수량만 바꿔서
             WishList wishList = wishListOptional.get();
@@ -38,7 +37,7 @@ public class WishListService {
             wishListRepository.save(wishList);
             return toWishResponseDto(wishList, product);
         }
-        WishList wishList = wishListRepository.save(new WishList(memberId, requestDto.productId(), requestDto.quantity()));
+        WishList wishList = wishListRepository.save(new WishList(member, product, requestDto.quantity()));
         return toWishResponseDto(wishList, product);
     }
 
@@ -46,11 +45,11 @@ public class WishListService {
         return new WishResponseDto(wishList.getId(), product.getName(), product.getImageUrl(), wishList.getQuantity(), product.getPrice());
     }
 
-    public List<WishResponseDto> getList(Long memeberId){
-        List<WishList> wishListList = wishListRepository.findWishListByMemberId(memeberId);
+    public List<WishResponseDto> getList(Member member){
+        List<WishList> wishListList = wishListRepository.findWishListByMember(member);
         List<WishResponseDto> responseDtoList = new ArrayList<>();
         for(WishList wishList : wishListList){
-            Product product = productRepository.findProductById(wishList.getProductId()).get();
+            Product product = productRepository.findProductById(wishList.getProduct().getId()).get();
             responseDtoList.add(toWishResponseDto(wishList, product));
         }
         return responseDtoList;
@@ -60,7 +59,7 @@ public class WishListService {
         wishListRepository.removeWishListById(wishListId);
     }
 
-    public List<WishResponseDto> changeQuantity(Long memberId, Long wishListId, int amount){
+    public List<WishResponseDto> changeQuantity(Member member, Long wishListId, int amount){
         Optional<WishList> optionalWishList = wishListRepository.findWishListById(wishListId);
         if(optionalWishList.isEmpty()){
             throw new IllegalStateException("잘못된 접근입니다.");
@@ -69,10 +68,10 @@ public class WishListService {
         wishList.updateQuantity(amount);
         if(wishList.getQuantity() == 0){
             removeFromWishList(wishListId);
-            return getList(memberId);
+            return getList(member);
         }
         wishListRepository.save(wishList);
-        return getList(memberId);
+        return getList(member);
     }
 
 }

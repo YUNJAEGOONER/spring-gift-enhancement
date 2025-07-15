@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @Service
 public class MemberService {
 
@@ -20,7 +21,6 @@ public class MemberService {
     }
 
     //멤버 회원 가입 -> 리포지토리에 저장
-    @Transactional
     public Member register(MemberRequestDto memberRequestDto){
         //중복을 확인 - memberService내에서 이미 등록된 메일이라면 예외를 던져서 예외처리로 HttpRepsonse를 내는 방식이 좋을것 같아요
         Optional<Member> member = memberRepository.findMemberByEmail(memberRequestDto.email());
@@ -33,14 +33,12 @@ public class MemberService {
     }
 
     //로그인 기능 -> 이메일과 비밀번호가 일치하는지 확인하는 로직
-    @Transactional
     public Boolean checkMember(MemberRequestDto memberRequestDto){
         Optional<Member> member = memberRepository.findMemberByEmailAndPassword(memberRequestDto.email(), memberRequestDto.password());
         return member.isPresent();
     }
 
     //특정 멤버를 조회하는 기능
-    @Transactional
     public Member findMember(Long id){
         Optional<Member> member = memberRepository.findMemberByMemberId(id);
         if(member.isEmpty())throw new MyException(ErrorCode.MEMBER_NOT_FOUND);
@@ -66,7 +64,6 @@ public class MemberService {
     }
 
     //멤버의 정보를 수정하는 기능
-    @Transactional
     public void modifyMember(Long id, MemberRequestDto memberRequestDto){
         Member member = findMember(id);
         member.changeInfo(memberRequestDto.email(), memberRequestDto.password());
@@ -74,12 +71,10 @@ public class MemberService {
     }
 
     //멤버를 삭제하는 기능
-    @Transactional
     public void removeMember(Long id){
         memberRepository.removeMemberByMemberId(id);
     }
 
-    @Transactional
     public List<Member> getAllMembers(){
         return memberRepository.findAll();
     }

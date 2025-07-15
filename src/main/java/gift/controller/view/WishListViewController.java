@@ -32,7 +32,7 @@ public class WishListViewController {
             @LoggedInMember Member member,
             Model model
     ){
-        List<WishResponseDto> myWishList = wishListService.getList(member.getMemberId());
+        List<WishResponseDto> myWishList = wishListService.getList(member);
         model.addAttribute("wishlist", myWishList);
         return "/yjshop/user/wishlist";
     }
@@ -47,7 +47,7 @@ public class WishListViewController {
         if(bindingResult.hasErrors()){
             return "redirect:/view/products/list";
         }
-        wishListService.addToWishList(member.getMemberId(), wishRequestDto);
+        wishListService.addToWishList(member, wishRequestDto);
         return "redirect:/view/my/wishlist";
     }
 
@@ -66,10 +66,9 @@ public class WishListViewController {
             @PathVariable Long wishListId,
             @LoggedInMember Member member
     ){
-        wishListService.changeQuantity(member.getMemberId(), wishListId, 1);
+        wishListService.changeQuantity(member, wishListId, 1);
         return "redirect:/view/my/wishlist";
     }
-
 
     //동일한 상품을 제거하는 경우 (장바구니 내 물품 수량 조절 -)
     @PostMapping("/wishlist/subtract/{wishListId}")
@@ -77,7 +76,7 @@ public class WishListViewController {
             @PathVariable Long wishListId,
             @LoggedInMember Member member
     ){
-        wishListService.changeQuantity(member.getMemberId(), wishListId, -1);
+        wishListService.changeQuantity(member, wishListId, -1);
         return "redirect:/view/my/wishlist";
     }
 

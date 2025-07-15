@@ -34,7 +34,7 @@ public class WishListController {
     //WishList에 담긴 상품 목록을 조회
     @GetMapping
     public ResponseEntity<List<WishResponseDto>> getWishList(@LoggedInMember Member member){
-        List<WishResponseDto> myWishList = wishListService.getList(member.getMemberId());
+        List<WishResponseDto> myWishList = wishListService.getList(member);
         return ResponseEntity.ok(myWishList);
     }
 
@@ -44,8 +44,7 @@ public class WishListController {
             @RequestBody @Valid WishRequestDto wishRequestDto, //상품ID, 수량
             @LoggedInMember Member member
     ){
-        Long memberId = member.getMemberId();
-        WishResponseDto wishResponseDto = wishListService.addToWishList(memberId, wishRequestDto);
+        WishResponseDto wishResponseDto = wishListService.addToWishList(member, wishRequestDto);
         return new ResponseEntity<>(wishResponseDto, HttpStatus.CREATED);
     }
 
@@ -62,8 +61,7 @@ public class WishListController {
             @PathVariable Long wishListId,
             @LoggedInMember Member member
     ){
-        Long memberId = member.getMemberId();
-        List<WishResponseDto> myWishList = wishListService.changeQuantity(memberId, wishListId, 1);
+        List<WishResponseDto> myWishList = wishListService.changeQuantity(member, wishListId, 1);
         return ResponseEntity.ok(myWishList);
     }
 
@@ -73,8 +71,7 @@ public class WishListController {
             @PathVariable Long wishListId,
             @LoggedInMember Member member
     ){
-        Long memberId = member.getMemberId();
-        List<WishResponseDto> myWishList = wishListService.changeQuantity(memberId, wishListId, -1);
+        List<WishResponseDto> myWishList = wishListService.changeQuantity(member, wishListId, -1);
         return ResponseEntity.ok(myWishList);
     }
 
