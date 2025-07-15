@@ -42,11 +42,8 @@ public class ProductController {
     //특정 상품을 조회(id)
     @GetMapping("/products/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable Long id) {
-        if(productService.findOne(id).isPresent()){
-            Product product = productService.findOne(id).get();
-            return new ResponseEntity<>(product, HttpStatus.OK);
-        }
-        return ResponseEntity.notFound().build();
+        Product product = productService.findOne(id);
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
     //read
@@ -65,8 +62,7 @@ public class ProductController {
             @PathVariable Long id
     ) {
         productService.modify(id, requestDto);
-        //특정 상품을 찾는 기능과 종속성을 가짐으로 좋지 않은 코드인지, 상관 없는지 궁금합니다.
-        Product modifiedProduct = productService.findOne(id).get();
+        Product modifiedProduct = productService.findOne(id);
         return new ResponseEntity<>(modifiedProduct, HttpStatus.OK);
     }
 

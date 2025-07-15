@@ -58,11 +58,8 @@ public class ProductAdminViewController {
             return "redirect:/view/admin/products";
         }
 
-        Optional<Product> product = productService.findOne(id);
-        if (product.isEmpty()) {
-            throw new MyException(ErrorCode.PRODUCT_NOT_FOUND);
-        }
-        model.addAttribute("product", product.get());
+        Product product = productService.findOne(id);
+        model.addAttribute("product", product);
         return "/yjshop/admin/product/productinfo";
     }
 
@@ -96,7 +93,7 @@ public class ProductAdminViewController {
             @PathVariable Long id,
             Model model
     ) {
-        Product product = productService.findOne(id).get();
+        Product product = productService.findOne(id);
         model.addAttribute("product", product);
         model.addAttribute("productRequestDto", new ProductRequestDto());
         return "/yjshop/admin/product/modifyform";
@@ -111,7 +108,7 @@ public class ProductAdminViewController {
             Model model
     ) {
         if(bindingResult.hasErrors()){
-            Product product = productService.findOne(id).get();
+            Product product = productService.findOne(id);
             model.addAttribute("product", product);
             return "/yjshop/admin/product/modifyform";
         }

@@ -37,11 +37,8 @@ public class ProductViewController {
             @RequestParam(required = false) Long id,
             Model model
     ) {
-        Optional<Product> product = productService.findOne(id);
-        if (product.isEmpty()) {
-            throw new MyException(ErrorCode.PRODUCT_NOT_FOUND);
-        }
-        model.addAttribute("product", product.get());
+        Product product = productService.findOne(id);
+        model.addAttribute("product", product);
         return "/yjshop/user/productinfo";
     }
 

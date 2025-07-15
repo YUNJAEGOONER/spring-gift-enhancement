@@ -4,7 +4,7 @@ import gift.entity.Member;
 import gift.dto.MemberRequestDto;
 import gift.exception.ErrorCode;
 import gift.exception.MyException;
-import gift.repository.MemberRepositoryJPA;
+import gift.repository.MemberRepository;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -14,9 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class MemberService {
 
-    private final MemberRepositoryJPA memberRepository;
+    private final MemberRepository memberRepository;
 
-    public MemberService(MemberRepositoryJPA memberRepository){
+    public MemberService(MemberRepository memberRepository){
         this.memberRepository = memberRepository;
     }
 
