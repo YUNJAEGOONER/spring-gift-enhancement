@@ -2,8 +2,7 @@ package gift.service;
 
 import gift.dto.Role;
 import gift.exception.ErrorCode;
-import gift.exception.MyException;
-import groovy.util.logging.Slf4j;
+import gift.exception.member.JWTAuthException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
@@ -50,7 +49,7 @@ public class JwtAuthService {
     //토큰을 검증 -> 로그인 이후의 동작 (wishList -> 사용자별 wishList 존재)
     public void checkValidation(String token) {
         if(token==null){
-            throw new MyException(ErrorCode.JWT_VALIDATION_FAIL);
+            throw new JWTAuthException(ErrorCode.JWT_VALIDATION_FAIL);
         }
         try{
             Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secretKey.getBytes())).build().parseSignedClaims(token);
@@ -58,7 +57,7 @@ public class JwtAuthService {
         catch (Exception e){
             //Authorization 헤더가 유효하지 않거나 토큰이 유효하지 않은 경우 401 Unauthorized 반환
             log.info("토큰검증에 실패했습니다.");
-            throw new MyException(ErrorCode.JWT_VALIDATION_FAIL);
+            throw new JWTAuthException(ErrorCode.JWT_VALIDATION_FAIL);
         }
     }
 

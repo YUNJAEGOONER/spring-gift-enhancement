@@ -42,7 +42,8 @@ public class WishListService {
     }
 
     public WishResponseDto toWishResponseDto(WishList wishList, Product product){
-        return new WishResponseDto(wishList.getId(), product.getName(), product.getImageUrl(), wishList.getQuantity(), product.getPrice());
+        Integer totalPrice = wishList.getQuantity() * product.getPrice();
+        return new WishResponseDto(wishList.getId(), product.getName(), product.getImageUrl(), wishList.getQuantity(), totalPrice);
     }
 
     public List<WishResponseDto> getList(Member member){
@@ -60,11 +61,7 @@ public class WishListService {
     }
 
     public List<WishResponseDto> changeQuantity(Member member, Long wishListId, int amount){
-        Optional<WishList> optionalWishList = wishListRepository.findWishListById(wishListId);
-        if(optionalWishList.isEmpty()){
-            throw new IllegalStateException("잘못된 접근입니다.");
-        }
-        WishList wishList = optionalWishList.get();
+        WishList wishList = wishListRepository.findWishListById(wishListId).get();
         wishList.updateQuantity(amount);
         if(wishList.getQuantity() == 0){
             removeFromWishList(wishListId);

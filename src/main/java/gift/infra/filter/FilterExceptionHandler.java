@@ -2,6 +2,7 @@
 package gift.infra.filter;
 
 import gift.exception.MyException;
+import gift.exception.member.LoginError;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -19,7 +20,7 @@ public class FilterExceptionHandler extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             filterChain.doFilter(request, response);
-        } catch (MyException e) {
+        } catch (LoginError e) {
             logger.info("[FilterExceptionHandlerForView]" + e.getErrorCode());
             request.setAttribute("errormsg", e.getErrorCode().getMessage());
             RequestDispatcher dispatcher = request.getRequestDispatcher("/view/login/error");

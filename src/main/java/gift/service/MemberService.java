@@ -3,7 +3,8 @@ package gift.service;
 import gift.entity.Member;
 import gift.dto.MemberRequestDto;
 import gift.exception.ErrorCode;
-import gift.exception.MyException;
+import gift.exception.member.MemberNotFoundException;
+import gift.exception.member.UnavailableEmailException;
 import gift.repository.MemberRepository;
 import java.util.List;
 import java.util.Optional;
@@ -24,9 +25,7 @@ public class MemberService {
     public Member register(MemberRequestDto memberRequestDto){
         //중복을 확인 - memberService내에서 이미 등록된 메일이라면 예외를 던져서 예외처리로 HttpRepsonse를 내는 방식이 좋을것 같아요
         Optional<Member> member = memberRepository.findMemberByEmail(memberRequestDto.email());
-        if(member.isPresent()){
-            throw new MyException(ErrorCode.UNAVAILABLE_EMAIL);
-        }
+        if(member.isPresent()) throw new UnavailableEmailException(ErrorCode.UNAVAILABLE_EMAIL);
         //중복된 이메일이 아니라면 회원가입을 진행
         Member createdMember = new Member(memberRequestDto.email(), memberRequestDto.password());
         return memberRepository.save(createdMember);
@@ -41,7 +40,7 @@ public class MemberService {
     //특정 멤버를 조회하는 기능
     public Member findMember(Long id){
         Optional<Member> member = memberRepository.findMemberByMemberId(id);
-        if(member.isEmpty())throw new MyException(ErrorCode.MEMBER_NOT_FOUND);
+        if(member.isEmpty())throw new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND);
         return member.get();
     }
 

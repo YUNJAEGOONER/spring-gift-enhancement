@@ -5,6 +5,7 @@ import gift.dto.MemberRequestDto;
 import gift.entity.Member;
 import gift.exception.ErrorCode;
 import gift.exception.MyException;
+import gift.exception.member.LoginError;
 import gift.service.JwtAuthService;
 import gift.service.MemberService;
 import jakarta.servlet.Filter;
@@ -61,12 +62,12 @@ public class LoginFilter implements Filter {
 
             //인증실패예외를 반환하고 이를 Http Response로 렌더링하는 작업이 필요할것 같아요.
             if(email.isBlank()|| password.isBlank()){
-                throw new MyException(ErrorCode.EMAIL_PASSWORD_REQUIRED);
+                throw new LoginError(ErrorCode.EMAIL_PASSWORD_REQUIRED);
             }
 
             //이를 인증할 수 있는 객체(의존성)에게 값을 넘겨야합니다.
             if(!memberService.checkMember(new MemberRequestDto(email, password))){
-                throw new MyException(ErrorCode.LOGIN_UNAVAILABLE);
+                throw new LoginError(ErrorCode.LOGIN_UNAVAILABLE);
             }
 
             Member member = memberService.getMemberByEmail(email).get();

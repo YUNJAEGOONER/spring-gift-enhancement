@@ -43,7 +43,7 @@ public class MemberController {
         return new ResponseEntity<>(new JwtResponseDto(token), HttpStatus.CREATED);
     }
 
-    //TODO: 로그인 기능 -> 토큰을 반환
+    //로그인 기능 -> 토큰을 반환
     @PostMapping("/login")
     public ResponseEntity<Object> login(
             @RequestBody @Valid MemberRequestDto memberRequestDto

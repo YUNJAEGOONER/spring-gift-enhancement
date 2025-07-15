@@ -4,6 +4,8 @@ import gift.dto.MemberRequestDto;
 import gift.entity.Member;
 import gift.exception.ErrorCode;
 import gift.exception.MyException;
+import gift.exception.member.MemberNotFoundException;
+import gift.exception.product.ProductNotFoundException;
 import gift.service.MemberService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -47,9 +49,7 @@ public class MemberAdminViewController {
             return "redirect:/view/admin/members";
         }
         Optional<Member> member = memberService.getMemberByEmail(email);
-        if(member.isEmpty()){
-            throw new MyException(ErrorCode.MEMBER_NOT_FOUND);
-        }
+        if(member.isEmpty()) throw new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND);
         model.addAttribute("member", member.get());
         return "/yjshop/admin/member/memberinfo";
     }
@@ -124,14 +124,9 @@ public class MemberAdminViewController {
         return "redirect:/view/admin/members";
     }
 
-    @ExceptionHandler(MyException.class)
-    public String MyExceptionHandler(MyException e, Model model){
+    @ExceptionHandler(MemberNotFoundException.class)
+    public String productNotFound(MemberNotFoundException e, Model model) {
         model.addAttribute("errorMsg", e.getErrorCode().getMessage());
-
-        if(e.getErrorCode().equals(ErrorCode.JWT_VALIDATION_FAIL)){
-            return "redirect:/view/login";
-        }
-
         return "/yjshop/admin/member/membernotfound";
     }
 

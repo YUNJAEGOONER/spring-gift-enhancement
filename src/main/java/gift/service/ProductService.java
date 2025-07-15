@@ -4,6 +4,7 @@ import gift.dto.ProductRequestDto;
 import gift.entity.Product;
 import gift.exception.ErrorCode;
 import gift.exception.MyException;
+import gift.exception.product.ProductNotFoundException;
 import gift.repository.ProductRepository;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +31,7 @@ public class ProductService {
     public Product findOne(Long id){
         Optional<Product> optionalProduct = productRepository.findProductById(id);
         if(optionalProduct.isEmpty()){
-            throw new MyException(ErrorCode.PRODUCT_NOT_FOUND);
+            throw new ProductNotFoundException(ErrorCode.PRODUCT_NOT_FOUND);
         }
         return optionalProduct.get();
     }

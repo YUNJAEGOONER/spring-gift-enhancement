@@ -2,7 +2,7 @@ package gift.infra.interceptor;
 
 import gift.dto.Role;
 import gift.exception.ErrorCode;
-import gift.exception.MyException;
+import gift.exception.member.JWTAuthException;
 import gift.service.JwtAuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -58,8 +58,6 @@ public class AdminCheckInterceptor implements HandlerInterceptor {
             log.info("관리자 인증 완료,,,");
             return true; //컨트롤러가 동작
         }
-
-        log.info("일반 사용자 인증 완료,,,");
-        return false; //컨트롤러가 동작하지 않음
+        throw new JWTAuthException(ErrorCode.ADMIN_PAGE);
     }
 }
