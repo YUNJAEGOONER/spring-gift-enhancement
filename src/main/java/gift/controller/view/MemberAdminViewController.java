@@ -87,7 +87,7 @@ public class MemberAdminViewController {
             @PathVariable Long id,
             Model model
     ){
-        Member member = memberService.findMember(id).get();
+        Member member = memberService.findMember(id);
         model.addAttribute("memberRequestDto", new MemberRequestDto(null, null));
         model.addAttribute("member", member);
         return "/yjshop/admin/member/modifyForm";
@@ -101,7 +101,7 @@ public class MemberAdminViewController {
             @PathVariable Long id,
             Model model
     ){
-        Member member = memberService.findMember(id).get();
+        Member member = memberService.findMember(id);
 
         if(!memberService.checkAvailableModify(id, memberRequestDto)){
             bindingResult.addError(new FieldError("memberRequestDto", "email", "이미 사용중인 이메일 입니다."));

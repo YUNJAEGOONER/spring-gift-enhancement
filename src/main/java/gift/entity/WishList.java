@@ -26,7 +26,7 @@ public class WishList {
     }
 
     public void updateQuantity(int quantity){
-        this.quantity =- quantity;
+        this.quantity += quantity;
     }
 
     public WishList() {

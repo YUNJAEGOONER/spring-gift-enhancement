@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @Service
 public class WishListService {
 
@@ -24,13 +26,12 @@ public class WishListService {
 
     //단일 WishResponseDto가
     public WishResponseDto addToWishList(Long memberId, WishRequestDto requestDto) {
-
         //이미 장바구니에 해당 상품이 있는 경우에는 수량만 업데이트
         Optional<WishList> wishListOptional = wishListRepository.findWishListByMemberIdAndProductId(
                 memberId, requestDto.productId());
         Product product = productRepository.findProductById(requestDto.productId()).get();
 
-        if (wishListOptional.isEmpty()) {
+        if (wishListOptional.isPresent()) {
             //수량만 바꿔서
             WishList wishList = wishListOptional.get();
             wishList.updateQuantity(requestDto.quantity());
@@ -44,7 +45,6 @@ public class WishListService {
     public WishResponseDto toWishResponseDto(WishList wishList, Product product){
         return new WishResponseDto(wishList.getId(), product.getName(), product.getImageUrl(), wishList.getQuantity(), product.getPrice());
     }
-
 
     public List<WishResponseDto> getList(Long memeberId){
         List<WishList> wishListList = wishListRepository.findWishListByMemberId(memeberId);
@@ -67,9 +67,12 @@ public class WishListService {
         }
         WishList wishList = optionalWishList.get();
         wishList.updateQuantity(amount);
+        if(wishList.getQuantity() == 0){
+            removeFromWishList(wishListId);
+            return getList(memberId);
+        }
         wishListRepository.save(wishList);
         return getList(memberId);
     }
-
 
 }

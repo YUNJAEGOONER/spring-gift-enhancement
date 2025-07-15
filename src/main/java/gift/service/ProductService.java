@@ -8,8 +8,10 @@ import gift.repository.ProductRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class ProductService {
 
     private final ProductRepository productRepository;
@@ -35,7 +37,7 @@ public class ProductService {
 
     //상품 검색
     public List<Product> searchProduct(String name){
-        return productRepository.findProductByNameLike(name);
+        return productRepository.findProductByNameContaining(name);
     }
 
     //전체 상품 검색

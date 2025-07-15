@@ -2,6 +2,7 @@ package gift.controller.api;
 
 import gift.dto.wish.WishRequestDto;
 import gift.dto.wish.WishResponseDto;
+import gift.exception.MyException;
 import gift.infra.LoggedInMember;
 import gift.entity.Member;
 import gift.service.WishListService;
@@ -10,6 +11,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -74,6 +76,11 @@ public class WishListController {
         Long memberId = member.getMemberId();
         List<WishResponseDto> myWishList = wishListService.changeQuantity(memberId, wishListId, -1);
         return ResponseEntity.ok(myWishList);
+    }
+
+    @ExceptionHandler(MyException.class)
+    public ResponseEntity<String> MemberControllerExceptionHandler(MyException e){
+        return ResponseEntity.status(e.getErrorCode().getStatusCode()).body(e.getErrorCode().getMessage());
     }
 
 }

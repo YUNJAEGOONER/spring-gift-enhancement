@@ -5,7 +5,6 @@ import gift.dto.MemberRequestDto;
 import gift.exception.ErrorCode;
 import gift.exception.MyException;
 import gift.repository.MemberRepository;
-import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -35,15 +34,17 @@ public class MemberService {
 
     //로그인 기능 -> 이메일과 비밀번호가 일치하는지 확인하는 로직
     @Transactional
-    public Boolean checkMember(@Valid MemberRequestDto memberRequestDto){
+    public Boolean checkMember(MemberRequestDto memberRequestDto){
         Optional<Member> member = memberRepository.findMemberByEmailAndPassword(memberRequestDto.email(), memberRequestDto.password());
         return member.isPresent();
     }
 
     //특정 멤버를 조회하는 기능
     @Transactional
-    public Optional<Member> findMember(Long id){
-        return memberRepository.findMemberByMemberId(id);
+    public Member findMember(Long id){
+        Optional<Member> member = memberRepository.findMemberByMemberId(id);
+        if(member.isEmpty())throw new MyException(ErrorCode.MEMBER_NOT_FOUND);
+        return member.get();
     }
 
     @Transactional
@@ -67,7 +68,7 @@ public class MemberService {
     //멤버의 정보를 수정하는 기능
     @Transactional
     public void modifyMember(Long id, MemberRequestDto memberRequestDto){
-        Member member = new Member(memberRequestDto.email(), memberRequestDto.password());
+        Member member = findMember(id);
         member.changeInfo(memberRequestDto.email(), memberRequestDto.password());
         memberRepository.save(member);
     }

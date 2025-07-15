@@ -3,6 +3,7 @@ package gift.controller.api;
 import gift.dto.JwtResponseDto;
 import gift.dto.MemberRequestDto;
 import gift.entity.Member;
+import gift.exception.MyException;
 import gift.service.JwtAuthService;
 import gift.service.MemberService;
 import jakarta.servlet.http.Cookie;
@@ -10,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,6 +57,11 @@ public class MemberController {
         Member member = memberService.getMemberByEmail(memberRequestDto.email()).get();
         String token = jwtAuthService.createJwt(member.getEmail(), member.getMemberId(), member.getRole());
         return ResponseEntity.ok().body(new JwtResponseDto(token));
+    }
+
+    @ExceptionHandler(MyException.class)
+    public ResponseEntity<String> MemberControllerExceptionHandler(MyException e){
+        return ResponseEntity.status(e.getErrorCode().getStatusCode()).body(e.getErrorCode().getMessage());
     }
 
 }

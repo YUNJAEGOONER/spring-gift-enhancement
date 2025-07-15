@@ -20,12 +20,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Optional<Product> findProductById(Long id);
     void removeProductById(Long id);
-    List<Product> findProductByNameLike(String name);
-
-
-//    public void modifyProduct(Long id, ProductRequestDto requestDto){
-//        String sql = "update products set name = ?, price =?, image_url = ? where id =?";
-//        jdbcTemplate.update(sql, requestDto.getName(), requestDto.getPrice(), requestDto.getImageUrl(), id);
-//    }
+    List<Product> findProductByNameContaining(String name);
 
 }

@@ -48,6 +48,6 @@ public class LoggedInMemberArgumentResolver implements HandlerMethodArgumentReso
 
         Long id = jwtAuthService.getMemberId(token); //토큰에서 정보 가져오기
         log.info("LoggedInMemberArgumentResolver(memberId = " + id.toString() + ")");
-        return memberService.findMember(id).get();
+        return memberService.findMember(id);
     }
 }

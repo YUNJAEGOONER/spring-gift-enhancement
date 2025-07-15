@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import java.util.HashMap;
 import java.util.List;
 
 @Entity
@@ -26,6 +27,7 @@ public class Member {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role = Role.USER; //회원 가입 -> 일반 회원
+
 
     public void changeInfo(String email, String password){
         this.email = email;
