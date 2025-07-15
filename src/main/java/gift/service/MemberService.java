@@ -23,7 +23,6 @@ public class MemberService {
     //멤버 회원 가입 -> 리포지토리에 저장
     @Transactional
     public Member register(MemberRequestDto memberRequestDto){
-
         //중복을 확인 - memberService내에서 이미 등록된 메일이라면 예외를 던져서 예외처리로 HttpRepsonse를 내는 방식이 좋을것 같아요
         if(getMemberByEmail(memberRequestDto.email()).isPresent()){ //중복이라면,,,
             throw new MyException(ErrorCode.UNAVAILABLE_EMAIL);

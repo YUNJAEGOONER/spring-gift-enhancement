@@ -1,4 +1,4 @@
-package gift.yjshop.controller;
+package gift.controller.view;
 
 import gift.entity.Product;
 import gift.exception.ErrorCode;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/view")
 @Controller
 public class ProductViewController {
-
 
     private final ProductService productService;
 

@@ -1,10 +1,10 @@
-package gift.yjshop.controller;
+package gift.controller.view;
 
 import gift.dto.wish.WishRequestDto;
 import gift.dto.wish.WishResponseDto;
 import gift.entity.Member;
+import gift.infra.LoggedInMember;
 import gift.service.WishListService;
-import gift.yjshop.infra.YjUser;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.stereotype.Controller;
@@ -29,7 +29,7 @@ public class WishListViewController {
     //WishList에 담긴 상품 목록을 조회
     @GetMapping("/wishlist")
     public String getWishList(
-            @YjUser Member member,
+            @LoggedInMember Member member,
             Model model
     ){
         List<WishResponseDto> myWishList = wishListService.getList(member.getMemberId());
@@ -42,7 +42,7 @@ public class WishListViewController {
     public String addToWishList(
             @ModelAttribute @Valid WishRequestDto wishRequestDto,//상품ID, 수량
             BindingResult bindingResult,
-            @YjUser Member member
+            @LoggedInMember Member member
     ){
         if(bindingResult.hasErrors()){
             return "redirect:/view/products/list";
@@ -64,7 +64,7 @@ public class WishListViewController {
     @PostMapping("/wishlist/add/{wishListId}")
     public String addItem(
             @PathVariable Long wishListId,
-            @YjUser Member member
+            @LoggedInMember Member member
     ){
         wishListService.changeQuantity(member.getMemberId(), wishListId, 1);
         return "redirect:/view/my/wishlist";
@@ -75,7 +75,7 @@ public class WishListViewController {
     @PostMapping("/wishlist/subtract/{wishListId}")
     public String subtractItem(
             @PathVariable Long wishListId,
-            @YjUser Member member
+            @LoggedInMember Member member
     ){
         wishListService.changeQuantity(member.getMemberId(), wishListId, -1);
         return "redirect:/view/my/wishlist";

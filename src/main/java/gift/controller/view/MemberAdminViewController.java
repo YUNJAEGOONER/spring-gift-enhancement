@@ -1,4 +1,4 @@
-package gift.yjshop.controller;
+package gift.controller.view;
 
 import gift.dto.MemberRequestDto;
 import gift.entity.Member;
@@ -134,8 +134,5 @@ public class MemberAdminViewController {
 
         return "/yjshop/admin/member/membernotfound";
     }
-
-
-
 
 }

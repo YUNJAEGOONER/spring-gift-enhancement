@@ -35,7 +35,7 @@ class WishListControllerTest {
 
         var response = restClient.post()
                 .uri(url)
-                .header("Authorization", "Bearer " + token)
+                .cookie("token", token)
                 .body(wishRequestDto)
                 .retrieve()
                 .toEntity(WishResponseDto.class);
@@ -54,7 +54,7 @@ class WishListControllerTest {
 
         var response = restClient.get()
                 .uri(url)
-                .header("Authorization", "Bearer " + token)
+                .cookie("token", token)
                 .retrieve()
                 .toEntity(List.class);
 
@@ -75,7 +75,7 @@ class WishListControllerTest {
 
         var response = restClient.get()
                 .uri(url)
-                .header("Authorization", "Bearer " + token)
+                .cookie("token", token)
                 .retrieve()
                 .toEntity(List.class);
 
@@ -87,7 +87,7 @@ class WishListControllerTest {
 
         var deleteResponse = restClient.delete()
                 .uri(url)
-                .header("Authorization", "Bearer " + token)
+                .cookie("token", token)
                 .retrieve()
                 .toEntity(Void.class);
 
@@ -97,7 +97,7 @@ class WishListControllerTest {
 
         response = restClient.get()
                 .uri(url)
-                .header("Authorization", "Bearer " + token)
+                .cookie("token", token)
                 .retrieve()
                 .toEntity(List.class);
 
@@ -115,13 +115,13 @@ class WishListControllerTest {
 
         var response = restClient.patch()
                 .uri(url)
-                .header("Authorization", "Bearer " + token)
+                .cookie("token", token)
                 .retrieve()
                 .toEntity(List.class);
 
         response = restClient.patch()
                 .uri(url)
-                .header("Authorization", "Bearer " +token)
+                .cookie("token", token)
                 .retrieve()
                 .toEntity(List.class);
 
@@ -133,7 +133,7 @@ class WishListControllerTest {
 
         response = restClient.patch()
                 .uri(url)
-                .header("Authorization", "Bearer " + token)
+                .cookie("token", token)
                 .retrieve()
                 .toEntity(List.class);
 
@@ -173,7 +173,7 @@ class WishListControllerTest {
         var response = restClient.post()
                 .uri(url)
                 .body(wishRequestDto)
-                .header("Authorization", "Bearer " + token)
+                .cookie("token", token)
                 .retrieve()
                 .toEntity(WishResponseDto.class);
         return response.getBody().wishListId();

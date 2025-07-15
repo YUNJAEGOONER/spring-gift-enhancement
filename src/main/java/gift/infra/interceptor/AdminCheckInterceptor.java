@@ -32,19 +32,21 @@ public class AdminCheckInterceptor implements HandlerInterceptor {
         try{
             Cookie[] cookies = request.getCookies();
             for(Cookie c : cookies){
-                if(c.getName().equals("yjtoken")){
+                if(c.getName().equals("token")){
                     token = c.getValue();
                 }
             }
         }
         catch (NullPointerException e){
-            log.info("쿠키가 존재하지 않음"); //쿠키가 존재하지 않는 경우,,,
-            throw new MyException(ErrorCode.LOGIN_REQUIRED_FAIL); //컨트롤러가 동작하지 않는다. (로그인 화면으로 유도)
+            log.info("쿠키가 존재하지 않음"); // 쿠키가 존재하지 않는 경우,,,
+            response.sendRedirect("/view/loginform"); //로그인 화면으로 유도
+            return false; //컨트롤러가 동작하지 않는다.
         }
 
         //쿠키에 토큰이 없다면 -> 로그인 페이지로 이동시키기
         if(token == null){
-            throw new MyException(ErrorCode.LOGIN_REQUIRED_FAIL); //컨트롤러가 동작하지 않는다. (로그인 화면으로 유도)
+            response.sendRedirect("/view/loginform");
+            return false; //컨트롤러가 동작하지 않는다.
         }
 
         //토큰의 유효성을 확인하기
@@ -60,5 +62,4 @@ public class AdminCheckInterceptor implements HandlerInterceptor {
         log.info("일반 사용자 인증 완료,,,");
         return false; //컨트롤러가 동작하지 않음
     }
-
 }

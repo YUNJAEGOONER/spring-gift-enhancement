@@ -1,4 +1,4 @@
-package gift.yjshop.controller;
+package gift.controller.view;
 
 import gift.dto.ProductRequestDto;
 import gift.entity.Product;
@@ -13,13 +13,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -27,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/view/admin")
 public class ProductAdminViewController {
 
-    private static final Logger log = LoggerFactory.getLogger(ProductAdminViewController.class);
     private final ProductService productService;
 
     public ProductAdminViewController(ProductService productService) {
@@ -127,4 +124,5 @@ public class ProductAdminViewController {
         model.addAttribute("errorMsg", e.getErrorCode().getMessage());
         return "/yjshop/admin/product/productnotfound";
     }
+
 }
