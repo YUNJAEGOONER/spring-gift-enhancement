@@ -24,9 +24,10 @@ public class MemberService {
 
     //멤버 회원 가입 -> 리포지토리에 저장
     public Member register(MemberRequestDto memberRequestDto){
-        //중복을 확인 - memberService내에서 이미 등록된 메일이라면 예외를 던져서 예외처리로 HttpRepsonse를 내는 방식이 좋을것 같아요
-        Optional<Member> member = memberRepository.findMemberByEmail(memberRequestDto.email());
-        if(member.isPresent()) throw new UnavailableEmailException(ErrorCode.UNAVAILABLE_EMAIL);
+        //중복을 확인
+        memberRepository.findMemberByEmail(memberRequestDto.email()).ifPresent(member -> {
+            throw new UnavailableEmailException(ErrorCode.UNAVAILABLE_EMAIL);
+        });
         //중복된 이메일이 아니라면 회원가입을 진행
         Member createdMember = new Member(memberRequestDto.email(), memberRequestDto.password());
         return memberRepository.save(createdMember);
@@ -34,25 +35,19 @@ public class MemberService {
 
     //로그인 기능 -> 이메일과 비밀번호가 일치하는지 확인하는 로직
     public Member checkMember(String email, String password){
-        Optional<Member> member = memberRepository.findMemberByEmailAndPassword(email, password);
-        if(member.isEmpty()) throw new LoginError(ErrorCode.LOGIN_UNAVAILABLE);
-        return member.get();
+        return memberRepository.findMemberByEmailAndPassword(email, password).orElseThrow(() -> new LoginError(ErrorCode.LOGIN_UNAVAILABLE));
     }
 
     //특정 멤버를 조회하는 기능
     public Member findMember(Long id){
-        Optional<Member> member = memberRepository.findMemberById(id);
-        if(member.isEmpty()) throw new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND);
-        return member.get();
+        return memberRepository.findMemberById(id).orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
     }
 
-    @Transactional
     public Optional<Member> getMemberByEmail(String email){
         return memberRepository.findMemberByEmail(email);
     }
 
     //멤버의 정보 수정이 가능한지 확인하는 기능
-    @Transactional
     public boolean checkAvailableModify(Long id, MemberRequestDto memberRequestDto){
         Optional<Member> member = memberRepository.findMemberByEmail(memberRequestDto.email());
         //이메일을 변경하는 경우 (이메일 + 비밀번호 모두 변경)
@@ -65,10 +60,11 @@ public class MemberService {
     }
 
     //멤버의 정보를 수정하는 기능
-    public void modifyMember(Long id, MemberRequestDto memberRequestDto){
+    public Member modifyMember(Long id, MemberRequestDto memberRequestDto){
         Member member = findMember(id);
         member.changeInfo(memberRequestDto.email(), memberRequestDto.password());
         memberRepository.save(member);
+        return member;
     }
 
     //멤버를 삭제하는 기능

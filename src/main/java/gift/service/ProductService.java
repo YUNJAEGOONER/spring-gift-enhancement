@@ -28,9 +28,8 @@ public class ProductService {
 
     //상품 검색
     public Product findOne(Long id){
-        Optional<Product> optionalProduct = productRepository.findProductById(id);
-        if(optionalProduct.isEmpty()) throw new ProductNotFoundException(ErrorCode.PRODUCT_NOT_FOUND);
-        return optionalProduct.get();
+        Product product = productRepository.findProductById(id).orElseThrow(()-> new ProductNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
+        return product;
     }
 
     //상품 검색
