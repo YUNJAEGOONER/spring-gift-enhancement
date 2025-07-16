@@ -1,7 +1,5 @@
 package gift.repository;
 
-import gift.entity.Member;
-import gift.entity.Product;
 import gift.entity.WishList;
 import java.util.List;
 import java.util.Optional;

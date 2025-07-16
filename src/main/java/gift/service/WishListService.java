@@ -32,23 +32,16 @@ public class WishListService {
         this.memberRepository = memberRepository;
     }
 
-    //단일 WishResponseDto가
     public WishResponseDto addToWishList(Long memberId, WishRequestDto requestDto) {
-        Optional<Product> optionalProduct = productRepository.findProductById(requestDto.productId());
-        if(optionalProduct.isEmpty()){
-            throw new ProductNotFoundException(ErrorCode.PRODUCT_NOT_FOUND);
-        }
-        Optional<Member> optionalMember = memberRepository.findMemberById(memberId);
-        if(optionalMember.isEmpty()){
-            throw new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND);
-        }
+        Product product = productRepository.findProductById(requestDto.productId()).orElseThrow(() -> new ProductNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
+        Member member = memberRepository.findMemberById(memberId).orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
         Optional<WishList> wishListOptional = wishListRepository.findWishListByMemberIdAndProductId(memberId, requestDto.productId());
         if (wishListOptional.isPresent()) {
             //이미 장바구니에 해당 상품이 있는 경우에는 수량만 업데이트
             return changeQuantity(wishListOptional.get().getId(), requestDto.quantity());
         }
-        WishList wishList = wishListRepository.save(new WishList(optionalMember.get(), optionalProduct.get(), requestDto.quantity()));
-        return toWishResponseDto(wishList, optionalProduct.get());
+        WishList wishList = wishListRepository.save(new WishList(member, product, requestDto.quantity()));
+        return toWishResponseDto(wishList, product);
     }
 
     public WishResponseDto toWishResponseDto(WishList wishList, Product product){
@@ -71,9 +64,7 @@ public class WishListService {
     }
 
     public WishResponseDto changeQuantity(Long wishListId, int amount){
-        Optional<WishList> optionalWishList = wishListRepository.findWishListById(wishListId);
-        if(optionalWishList.isEmpty()) throw new WishNotFoundException(ErrorCode.WISH_NOT_FOUND);
-        WishList wishList = optionalWishList.get();
+        WishList wishList = wishListRepository.findWishListById(wishListId).orElseThrow(() -> new WishNotFoundException(ErrorCode.WISH_NOT_FOUND));
         wishList.updateQuantity(amount);
         if(wishList.getQuantity() == 0){
             removeFromWishList(wishListId);
