@@ -3,7 +3,6 @@ package gift.service;
 import gift.dto.ProductRequestDto;
 import gift.entity.Product;
 import gift.exception.ErrorCode;
-import gift.exception.MyException;
 import gift.exception.product.ProductNotFoundException;
 import gift.repository.ProductRepository;
 import java.util.List;

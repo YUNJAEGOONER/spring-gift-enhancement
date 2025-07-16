@@ -1,7 +1,5 @@
-
 package gift.infra.filter;
 
-import gift.exception.MyException;
 import gift.exception.member.LoginError;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.RequestDispatcher;

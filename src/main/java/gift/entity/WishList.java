@@ -35,9 +35,7 @@ public class WishList {
         this.quantity += quantity;
     }
 
-    public WishList() {
-
-    }
+    protected WishList() {}
 
     public Long getId() {
         return id;

@@ -33,8 +33,7 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    public Product() {
-    }
+    protected Product() {}
 
     public void changeProductInfo(String name, Integer price, String imageUrl){
         this.name = name;
