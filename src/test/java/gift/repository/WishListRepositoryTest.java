@@ -14,11 +14,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 @DataJpaTest
 class WishListRepositoryTest {
 
-    @Autowired WishListRepository wishListRepository;
+    @Autowired private WishListRepository wishListRepository;
 
-    @Autowired MemberRepository memberRepository;
+    @Autowired private MemberRepository memberRepository;
 
-    @Autowired ProductRepository productRepository;
+    @Autowired private ProductRepository productRepository;
 
     @Test
     void 위시리스트_생성(){

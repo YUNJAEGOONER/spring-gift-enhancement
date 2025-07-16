@@ -14,7 +14,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 @DataJpaTest
 class ProductRepositoryTest {
 
-    @Autowired ProductRepository productRepository;
+    @Autowired private ProductRepository productRepository;
 
     @Test
     void 상품_저장(){
