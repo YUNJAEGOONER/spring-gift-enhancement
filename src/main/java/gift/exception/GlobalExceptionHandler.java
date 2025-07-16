@@ -1,6 +1,7 @@
 package gift.exception;
 
 import gift.exception.member.JWTAuthException;
+import gift.exception.member.LoginError;
 import gift.exception.member.MemberNotFoundException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,11 +16,16 @@ public class GlobalExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(JWTAuthException.class)
-    public String satustUnauthorizedHandler(MyException e, HttpServletResponse response) {
+    public String satustUnauthorizedHandler(JWTAuthException e, HttpServletResponse response) {
         log.info(e.getErrorCode().getMessage());
         Cookie cookie = new Cookie("toke", null);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
+        return "redirect:/view/loginform";
+    }
+
+    @ExceptionHandler(LoginError.class)
+    public String LoginErrorHandler(LoginError e) {
         return "redirect:/view/loginform";
     }
 

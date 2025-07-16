@@ -87,7 +87,7 @@ public class LoginViewController {
     //로그아웃 기능 -> 토큰을 만료시킴
     @GetMapping("/my/logout")
     public String logout(HttpServletResponse response){
-        Cookie logoutcookie = new Cookie("yjtoken", null);
+        Cookie logoutcookie = new Cookie("token", null);
         logoutcookie.setPath("/");
         logoutcookie.setMaxAge(0); //즉시 만료되는 토큰을 발행
         response.addCookie(logoutcookie);
