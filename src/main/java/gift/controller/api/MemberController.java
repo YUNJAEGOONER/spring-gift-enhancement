@@ -3,12 +3,15 @@ package gift.controller.api;
 import gift.dto.JwtResponseDto;
 import gift.dto.MemberRequestDto;
 import gift.entity.Member;
+import gift.exception.ErrorCode;
 import gift.exception.MyException;
+import gift.exception.member.LoginError;
 import gift.service.JwtAuthService;
 import gift.service.MemberService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -48,13 +51,7 @@ public class MemberController {
     public ResponseEntity<Object> login(
             @RequestBody @Valid MemberRequestDto memberRequestDto
     ){
-        //서버에 저장된 id-pw 쌍과 일치하는지 확인
-        if(!memberService.checkMember(memberRequestDto)){
-            //잘못된 로그인에 대해서는 403을 반환
-            return new ResponseEntity<>("아이디 또는 비밀번호가 잘못되었습니다.", HttpStatus.FORBIDDEN);
-        }
-        //서버에 저장된 id-pw 쌍과 일치한다면 토큰을 발급
-        Member member = memberService.getMemberByEmail(memberRequestDto.email()).get();
+        Member member = memberService.checkMember(memberRequestDto.email(), memberRequestDto.password());
         String token = jwtAuthService.createJwt(member.getEmail(), member.getMemberId(), member.getRole());
         return ResponseEntity.ok().body(new JwtResponseDto(token));
     }

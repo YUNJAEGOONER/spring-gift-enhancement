@@ -3,6 +3,7 @@ package gift.service;
 import gift.entity.Member;
 import gift.dto.MemberRequestDto;
 import gift.exception.ErrorCode;
+import gift.exception.member.LoginError;
 import gift.exception.member.MemberNotFoundException;
 import gift.exception.member.UnavailableEmailException;
 import gift.repository.MemberRepository;
@@ -32,9 +33,10 @@ public class MemberService {
     }
 
     //로그인 기능 -> 이메일과 비밀번호가 일치하는지 확인하는 로직
-    public Boolean checkMember(MemberRequestDto memberRequestDto){
-        Optional<Member> member = memberRepository.findMemberByEmailAndPassword(memberRequestDto.email(), memberRequestDto.password());
-        return member.isPresent();
+    public Member checkMember(String email, String password){
+        Optional<Member> member = memberRepository.findMemberByEmailAndPassword(email, password);
+        if(member.isEmpty()) throw new LoginError(ErrorCode.LOGIN_UNAVAILABLE);
+        return member.get();
     }
 
     //특정 멤버를 조회하는 기능

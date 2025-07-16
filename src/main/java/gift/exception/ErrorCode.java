@@ -15,7 +15,7 @@ public enum ErrorCode {
     EMAIL_PASSWORD_REQUIRED(HttpStatus.BAD_REQUEST, "아이디와 비밀번호는 필수로 입력해야합니다."),
     UNAVAILABLE_EMAIL(HttpStatus.BAD_REQUEST, "이미 가입되어 있는 이메일 입니다."),
 
-    LOGIN_UNAVAILABLE(HttpStatus.FORBIDDEN, "이메일 또는 비밀번호가 잘못되었습니다."),;
+    LOGIN_UNAVAILABLE(HttpStatus.UNAUTHORIZED, "이메일 또는 비밀번호가 잘못되었습니다."),;
 
     private final HttpStatus statusCode;
     private final String message;

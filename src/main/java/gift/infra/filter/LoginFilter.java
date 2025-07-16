@@ -62,12 +62,7 @@ public class LoginFilter implements Filter {
                 throw new LoginError(ErrorCode.EMAIL_PASSWORD_REQUIRED);
             }
 
-            //이를 인증할 수 있는 객체(의존성)에게 값을 넘겨야합니다.
-            if(!memberService.checkMember(new MemberRequestDto(email, password))){
-                throw new LoginError(ErrorCode.LOGIN_UNAVAILABLE);
-            }
-
-            Member member = memberService.getMemberByEmail(email).get();
+            Member member = memberService.checkMember(email, password);
             String token = jwtAuthService.createJwt(email, member.getMemberId(), member.getRole());
 
             //쿠키 발행 (쿠키에 토큰을 저장)

@@ -118,7 +118,7 @@ class MemberControllerTest {
         var loginUrl = "http://localhost:" + port + "/api/members/login";
         MemberRequestDto loginMember = new MemberRequestDto("test321@gmail.com", "password1");
 
-        Assertions.assertThrows(HttpClientErrorException.Forbidden.class,
+        Assertions.assertThrows(HttpClientErrorException.Unauthorized.class,
                 () -> restClient.post()
                         .uri(loginUrl)
                         .body(loginMember)
@@ -131,7 +131,7 @@ class MemberControllerTest {
         var url = "http://localhost:" + port + "/api/members/login";
         MemberRequestDto loginMember = new MemberRequestDto("qewer123@gmail.com", "password");
 
-        Assertions.assertThrows(HttpClientErrorException.Forbidden.class,
+        Assertions.assertThrows(HttpClientErrorException.Unauthorized.class,
                 () -> restClient.post()
                         .uri(url)
                         .body(loginMember)
