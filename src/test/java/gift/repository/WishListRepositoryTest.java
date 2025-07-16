@@ -46,7 +46,7 @@ class WishListRepositoryTest {
     }
 
     @Test
-    void removeWishListById() {
+    void 위시리스트_아이디를_통한_위시리스트_삭제() {
         Member member = memberRepository.save(new Member("declan@arsenal.com", "coyg"));
         Product product = productRepository.save(new Product("Galaxy Book", 1500000, "image"));
         WishList wishList = wishListRepository.save(new WishList(member, product, 2));
