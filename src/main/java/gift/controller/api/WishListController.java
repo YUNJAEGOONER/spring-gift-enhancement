@@ -57,21 +57,21 @@ public class WishListController {
 
     //동일한 상품을 추가하는 경우 (장바구니 내 물품 수량 조절)
     @PatchMapping("/add/{wishListId}")
-    public ResponseEntity<List<WishResponseDto>> addItem(
+    public ResponseEntity<WishResponseDto> addItem(
             @PathVariable Long wishListId,
             @LoggedInMember Member member
     ){
-        List<WishResponseDto> myWishList = wishListService.changeQuantity(member.getMemberId(), wishListId, 1);
+        WishResponseDto myWishList = wishListService.changeQuantity(wishListId, 1);
         return ResponseEntity.ok(myWishList);
     }
 
     //동일한 상품을 제거하는 경우 (장바구니 내 물품 수량 조절)
     @PatchMapping("/subtract/{wishListId}")
-    public ResponseEntity<List<WishResponseDto>> subtractItem(
+    public ResponseEntity<WishResponseDto> subtractItem(
             @PathVariable Long wishListId,
             @LoggedInMember Member member
     ){
-        List<WishResponseDto> myWishList = wishListService.changeQuantity(member.getMemberId(), wishListId, -1);
+        WishResponseDto myWishList = wishListService.changeQuantity(wishListId, -1);
         return ResponseEntity.ok(myWishList);
     }
 

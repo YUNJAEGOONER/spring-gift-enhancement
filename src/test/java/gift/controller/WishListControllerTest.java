@@ -113,20 +113,21 @@ class WishListControllerTest {
 
         var url = "http://localhost:" + port + "/api/wishlist/add/" + wishlistId.toString();
 
+        // 상품추가버튼(+) 2번 누름
         var response = restClient.patch()
                 .uri(url)
                 .cookie("token", token)
                 .retrieve()
-                .toEntity(List.class);
+                .toEntity(WishResponseDto.class);
 
         response = restClient.patch()
                 .uri(url)
                 .cookie("token", token)
                 .retrieve()
-                .toEntity(List.class);
+                .toEntity(WishResponseDto.class);
 
         System.out.println(response.getBody());
-        assertThat(response.getBody().size()).isEqualTo(1);
+        assertThat(response.getBody().quantity()).isEqualTo(102);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         url = "http://localhost:" + port + "/api/wishlist/subtract/" + wishlistId.toString();
@@ -135,10 +136,10 @@ class WishListControllerTest {
                 .uri(url)
                 .cookie("token", token)
                 .retrieve()
-                .toEntity(List.class);
+                .toEntity(WishResponseDto.class);
 
         System.out.println(response.getBody());
-        assertThat(response.getBody().size()).isEqualTo(1);
+        assertThat(response.getBody().quantity()).isEqualTo(101);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 

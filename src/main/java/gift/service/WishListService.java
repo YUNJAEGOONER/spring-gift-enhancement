@@ -44,10 +44,7 @@ public class WishListService {
         Optional<WishList> wishListOptional = wishListRepository.findWishListByMemberIdAndProductId(memberId, requestDto.productId());
         if (wishListOptional.isPresent()) {
             //이미 장바구니에 해당 상품이 있는 경우에는 수량만 업데이트
-            WishList wishList = wishListOptional.get();
-            wishList.updateQuantity(requestDto.quantity());
-            wishListRepository.save(wishList);
-            return toWishResponseDto(wishList, optionalProduct.get());
+            return changeQuantity(wishListOptional.get().getId(), requestDto.quantity());
         }
         WishList wishList = wishListRepository.save(new WishList(optionalMember.get(), optionalProduct.get(), requestDto.quantity()));
         return toWishResponseDto(wishList, optionalProduct.get());
@@ -72,15 +69,17 @@ public class WishListService {
         wishListRepository.removeWishListById(wishListId);
     }
 
-    public List<WishResponseDto> changeQuantity(Long memberId, Long wishListId, int amount){
-        WishList wishList = wishListRepository.findWishListById(wishListId).get();
+    public WishResponseDto changeQuantity(Long wishListId, int amount){
+        Optional<WishList> optionalWishList = wishListRepository.findWishListById(wishListId);
+        if(optionalWishList.isEmpty()) throw new RuntimeException();
+        WishList wishList = optionalWishList.get();
         wishList.updateQuantity(amount);
         if(wishList.getQuantity() == 0){
             removeFromWishList(wishListId);
-            return getList(memberId);
+            return toWishResponseDto(wishList, wishList.getProduct());
         }
         wishListRepository.save(wishList);
-        return getList(memberId);
+        return toWishResponseDto(wishList, wishList.getProduct());
     }
 
 }

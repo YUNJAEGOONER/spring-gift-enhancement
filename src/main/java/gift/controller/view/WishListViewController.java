@@ -53,30 +53,22 @@ public class WishListViewController {
 
     //위시 리스트에 담긴 상품을 삭제
     @PostMapping("/wishlist/delete/{wishListId}")
-    public String removeWishList(
-            @PathVariable Long wishListId
-    ){
+    public String removeWishList(@PathVariable Long wishListId){
         wishListService.removeFromWishList(wishListId);
         return "redirect:/view/my/wishlist";
     }
 
     //동일한 상품을 추가하는 경우 (장바구니 내 물품 수량 조절 + )
     @PostMapping("/wishlist/add/{wishListId}")
-    public String addItem(
-            @PathVariable Long wishListId,
-            @LoggedInMember Member member
-    ){
-        wishListService.changeQuantity(member.getMemberId(), wishListId, 1);
+    public String addItem(@PathVariable Long wishListId) {
+        wishListService.changeQuantity(wishListId, 1);
         return "redirect:/view/my/wishlist";
     }
 
     //동일한 상품을 제거하는 경우 (장바구니 내 물품 수량 조절 -)
     @PostMapping("/wishlist/subtract/{wishListId}")
-    public String subtractItem(
-            @PathVariable Long wishListId,
-            @LoggedInMember Member member
-    ){
-        wishListService.changeQuantity(member.getMemberId(), wishListId, -1);
+    public String subtractItem(@PathVariable Long wishListId){
+        wishListService.changeQuantity(wishListId, -1);
         return "redirect:/view/my/wishlist";
     }
 
