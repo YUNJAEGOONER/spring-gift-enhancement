@@ -1,7 +1,7 @@
 package gift.service;
 
-import gift.entity.Member;
 import gift.dto.MemberRequestDto;
+import gift.entity.Member;
 import gift.exception.ErrorCode;
 import gift.exception.member.LoginError;
 import gift.exception.member.MemberNotFoundException;

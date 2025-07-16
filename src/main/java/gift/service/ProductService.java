@@ -6,7 +6,6 @@ import gift.exception.ErrorCode;
 import gift.exception.product.ProductNotFoundException;
 import gift.repository.ProductRepository;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

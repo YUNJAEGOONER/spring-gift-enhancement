@@ -2,9 +2,9 @@ package gift.controller.api;
 
 import gift.dto.wish.WishRequestDto;
 import gift.dto.wish.WishResponseDto;
+import gift.entity.Member;
 import gift.exception.MyException;
 import gift.infra.LoggedInMember;
-import gift.entity.Member;
 import gift.service.WishListService;
 import jakarta.validation.Valid;
 import java.util.List;

@@ -1,7 +1,6 @@
 package gift.infra.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gift.dto.MemberRequestDto;
 import gift.entity.Member;
 import gift.exception.ErrorCode;
 import gift.exception.member.LoginError;
