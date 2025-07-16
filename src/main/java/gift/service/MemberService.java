@@ -39,7 +39,7 @@ public class MemberService {
 
     //특정 멤버를 조회하는 기능
     public Member findMember(Long id){
-        Optional<Member> member = memberRepository.findMemberByMemberId(id);
+        Optional<Member> member = memberRepository.findMemberById(id);
         if(member.isEmpty())throw new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND);
         return member.get();
     }
@@ -58,7 +58,7 @@ public class MemberService {
             return true; //변경 가능
         }
         //비밀번호만 변경하는 경우(이메일은 변경하지 않음)
-        String email = memberRepository.findMemberByMemberId(id).get().getEmail();
+        String email = memberRepository.findMemberById(id).get().getEmail();
         return email.equals(memberRequestDto.email()); //변경 가능
     }
 
@@ -71,7 +71,7 @@ public class MemberService {
 
     //멤버를 삭제하는 기능
     public void removeMember(Long id){
-        memberRepository.removeMemberByMemberId(id);
+        memberRepository.removeMemberById(id);
     }
 
     public List<Member> getAllMembers(){

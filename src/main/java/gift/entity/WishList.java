@@ -15,11 +15,11 @@ public class WishList {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "MEMBER_ID")
+    @JoinColumn(name = "memberId")
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "PRODUCT_ID")
+    @JoinColumn(name = "productId")
     private Product product;
 
     @Column(nullable = false)

@@ -68,7 +68,7 @@ class WishListRepositoryTest {
         Product product2 = productRepository.save(new Product("LG Gram", 1200000, "image"));
         wishListRepository.save(new WishList(member, product2, 3));
 
-        List<WishList> wishListByMember = wishListRepository.findWishListByMember(member);
+        List<WishList> wishListByMember = wishListRepository.findWishListByMemberId(member.getMemberId());
         assertThat(wishListByMember.size()).isEqualTo(2);
     }
 
@@ -77,11 +77,11 @@ class WishListRepositoryTest {
         Member member = memberRepository.save(new Member("declan@arsenal.com", "coyg"));
         Product product = productRepository.save(new Product("Galaxy Book", 1500000, "image"));
 
-        assertThat(wishListRepository.findWishListByMemberAndProduct(member, product)).isEmpty();
+        assertThat(wishListRepository.findWishListByMemberIdAndProductId(member.getMemberId(), product.getId())).isEmpty();
 
         WishList wishList = wishListRepository.save(new WishList(member, product, 5));
 
-        Optional<WishList> wishListOptional = wishListRepository.findWishListByMemberAndProduct(member, product);
+        Optional<WishList> wishListOptional = wishListRepository.findWishListByMemberIdAndProductId(member.getMemberId(), product.getId());
 
         assertThat(wishListOptional).isNotEmpty();
         assertThat(wishListOptional.get().getProduct()).isEqualTo(product);

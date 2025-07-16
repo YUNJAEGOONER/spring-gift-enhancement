@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findMemberByEmailAndPassword(String email, String password);
     Optional<Member> findMemberByEmail(String email);
-    Optional<Member> findMemberByMemberId(Long memberId);
-    void removeMemberByMemberId(Long memberId);
+    Optional<Member> findMemberById(Long id);
+    void removeMemberById(Long memberId);
 }

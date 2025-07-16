@@ -17,7 +17,7 @@ import java.util.List;
 public class Member {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memberId;
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -45,7 +45,7 @@ public class Member {
     public Member() {};
 
     public Long getMemberId(){
-        return memberId;
+        return id;
     }
 
     public String getEmail(){

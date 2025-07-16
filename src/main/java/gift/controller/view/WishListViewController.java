@@ -32,7 +32,7 @@ public class WishListViewController {
             @LoggedInMember Member member,
             Model model
     ){
-        List<WishResponseDto> myWishList = wishListService.getList(member);
+        List<WishResponseDto> myWishList = wishListService.getList(member.getMemberId());
         model.addAttribute("wishlist", myWishList);
         return "/yjshop/user/wishlist";
     }
@@ -47,7 +47,7 @@ public class WishListViewController {
         if(bindingResult.hasErrors()){
             return "redirect:/view/products/list";
         }
-        wishListService.addToWishList(member, wishRequestDto);
+        wishListService.addToWishList(member.getMemberId(), wishRequestDto);
         return "redirect:/view/my/wishlist";
     }
 
@@ -66,7 +66,7 @@ public class WishListViewController {
             @PathVariable Long wishListId,
             @LoggedInMember Member member
     ){
-        wishListService.changeQuantity(member, wishListId, 1);
+        wishListService.changeQuantity(member.getMemberId(), wishListId, 1);
         return "redirect:/view/my/wishlist";
     }
 
@@ -76,7 +76,7 @@ public class WishListViewController {
             @PathVariable Long wishListId,
             @LoggedInMember Member member
     ){
-        wishListService.changeQuantity(member, wishListId, -1);
+        wishListService.changeQuantity(member.getMemberId(), wishListId, -1);
         return "redirect:/view/my/wishlist";
     }
 

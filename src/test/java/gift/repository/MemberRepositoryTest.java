@@ -25,7 +25,7 @@ class MemberRepositoryTest {
     @Test
     void 아이디로_회원조회(){
         Member member = memberRepository.save(new Member("user2@pusan.ac.kr", "demopassword"));
-        Optional<Member> findMember = memberRepository.findMemberByMemberId(member.getMemberId());
+        Optional<Member> findMember = memberRepository.findMemberById(member.getMemberId());
         System.out.println("findMember = " + findMember);
         assertThat(findMember).isNotNull();
         assertThat(findMember.get().getEmail()).isEqualTo(member.getEmail());
@@ -47,8 +47,8 @@ class MemberRepositoryTest {
         Optional<Member> findMember = memberRepository.findMemberByEmail("user4@daum.net");
         System.out.println("findMember = " + findMember);
         Long id = findMember.get().getMemberId();
-        memberRepository.removeMemberByMemberId(id);
-        assertThat(memberRepository.findMemberByMemberId(id)).isEmpty();
+        memberRepository.removeMemberById(id);
+        assertThat(memberRepository.findMemberById(id)).isEmpty();
         assertThat(memberRepository.findMemberByEmail("user4@daum.net")).isEmpty();
     }
 
