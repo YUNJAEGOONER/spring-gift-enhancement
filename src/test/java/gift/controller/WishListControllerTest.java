@@ -46,7 +46,7 @@ class WishListControllerTest {
 
     @Test
     void 장바구니의_상품들을_조회하는_기능(){
-        String token = loginAndReturnToken("testuser1@kakao.com" , "12345678");
+        String token = loginAndReturnToken("testuser1@naver.com" , "12345678");
         addProduct(2L, 5, token);
         addProduct(3L, 10, token);
 
@@ -65,7 +65,7 @@ class WishListControllerTest {
 
     @Test
     void 장바구니에_있는_상품을_삭제하는_기능(){
-        String token = loginAndReturnToken("testuser2@naver.com" , "12345678");
+        String token = loginAndReturnToken("testuser1@naver.com" , "12345678");
 
         addProduct(2L, 5, token);
         addProduct(3L, 10, token);
@@ -107,7 +107,7 @@ class WishListControllerTest {
 
     @Test
     void 장바구니에서_상품을_추가하고_제거하는_기능(){
-        String token = loginAndReturnToken("testuser3@apple.com" , "12345678");
+        String token = loginAndReturnToken("testuser2@apple.com" , "12345678");
         //상품 100개를 추가
         Long wishlistId = addProduct(3L, 100, token);
 

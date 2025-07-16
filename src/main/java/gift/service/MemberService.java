@@ -40,7 +40,7 @@ public class MemberService {
     //특정 멤버를 조회하는 기능
     public Member findMember(Long id){
         Optional<Member> member = memberRepository.findMemberById(id);
-        if(member.isEmpty())throw new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND);
+        if(member.isEmpty()) throw new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND);
         return member.get();
     }
 

@@ -1,14 +1,9 @@
 package gift.controller.view;
 
 import gift.entity.Product;
-import gift.exception.ErrorCode;
-import gift.exception.MyException;
-import gift.exception.member.MemberNotFoundException;
 import gift.exception.product.ProductNotFoundException;
 import gift.service.ProductService;
-import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;

@@ -1,7 +1,6 @@
 package gift.infra.interceptor;
 
 import gift.exception.ErrorCode;
-import gift.exception.MyException;
 import gift.exception.member.LoginError;
 import gift.service.JwtAuthService;
 import jakarta.servlet.http.Cookie;
@@ -27,31 +26,24 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //컨트롤러가 호출되기 전에 실행됨
         log.info("[LoginChecker] preHandle");
-        String token = null;
 
-        try{
-            Cookie[] cookies = request.getCookies();
-            for(Cookie c : cookies){
-                if(c.getName().equals("token")){
-                    token = c.getValue();
-                }
+        if(request.getCookies() == null){
+            log.warn("쿠키가 존재하지 않음");
+            throw new LoginError(ErrorCode.LOGIN_REQUIRED_FAIL);
+        }
+
+        for(Cookie c : request.getCookies()){
+            if(c.getName().equals("token")){
+                String token = c.getValue();
+                log.info("로그인 정보를 확인 중,,,");
+                jwtAuthService.checkValidation(token);
+                log.info("JWT 토큰 검증 성공,,,");
+                return true;
             }
         }
-        catch (NullPointerException e){
-            log.info("쿠키가 존재하지 않음"); //쿠키가 존재하지 않는 경우,,,
-            throw new LoginError(ErrorCode.LOGIN_REQUIRED_FAIL);
-        }
 
-        //쿠키에 토큰이 없다면 -> 로그인 페이지로 이동시키기
-        if(token == null){
-            throw new LoginError(ErrorCode.LOGIN_REQUIRED_FAIL);
-        }
-
-        //토큰의 유효성을 확인하기
-        log.info("로그인 정보를 확인 중,,,");
-        jwtAuthService.checkValidation(token);
-        log.info("JWT 토큰 검증 성공,,,");
-        return true; //컨트롤러가 동작
+        log.warn("유효한 토큰이 존재하지 않습니다...");
+        throw new LoginError(ErrorCode.LOGIN_REQUIRED_FAIL);
     }
 
 }

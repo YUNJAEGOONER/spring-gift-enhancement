@@ -8,6 +8,7 @@ import gift.entity.WishList;
 import gift.exception.ErrorCode;
 import gift.exception.member.MemberNotFoundException;
 import gift.exception.product.ProductNotFoundException;
+import gift.exception.wish.WishNotFoundException;
 import gift.repository.MemberRepository;
 import gift.repository.ProductRepository;
 import gift.repository.WishListRepository;
@@ -71,7 +72,7 @@ public class WishListService {
 
     public WishResponseDto changeQuantity(Long wishListId, int amount){
         Optional<WishList> optionalWishList = wishListRepository.findWishListById(wishListId);
-        if(optionalWishList.isEmpty()) throw new RuntimeException();
+        if(optionalWishList.isEmpty()) throw new WishNotFoundException(ErrorCode.WISH_NOT_FOUND);
         WishList wishList = optionalWishList.get();
         wishList.updateQuantity(amount);
         if(wishList.getQuantity() == 0){
