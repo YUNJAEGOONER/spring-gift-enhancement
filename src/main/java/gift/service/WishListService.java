@@ -12,8 +12,6 @@ import gift.exception.wish.WishNotFoundException;
 import gift.repository.MemberRepository;
 import gift.repository.ProductRepository;
 import gift.repository.WishListRepository;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

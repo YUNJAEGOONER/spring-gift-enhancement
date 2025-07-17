@@ -86,14 +86,18 @@
       <div class="input-group">
         <label for="email">이메일</label>
         <input type="email" id="email" th:field="*{email}" placeholder="이메일을 입력하세요">
-        <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="warning-message">Email Error</div>
+        <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="warning-message">
+          Email Error
+        </div>
       </div>
 
       <!-- 비밀번호 입력 -->
       <div class="input-group">
         <label for="password">비밀번호</label>
         <input type="password" id="password" th:field="*{password}" placeholder="비밀번호를 입력하세요">
-        <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="warning-message">Password Error</div>
+        <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+             class="warning-message">Password Error
+        </div>
       </div>
 
       <input type="submit" value="로그인">

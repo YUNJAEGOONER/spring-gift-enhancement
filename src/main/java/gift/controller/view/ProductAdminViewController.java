@@ -5,7 +5,6 @@ import gift.entity.Product;
 import gift.exception.product.ProductNotFoundException;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
-import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,4 +1,4 @@
-package gift.controller;
+package gift.controller.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

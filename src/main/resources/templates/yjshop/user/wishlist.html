@@ -1,6 +1,4 @@
-
 <html layout:decorate="~{yjshop/user/layout}">
-
 <div layout:fragment="content">
 
   <table>
@@ -64,12 +62,49 @@
       </form>
     </td>
 
-
-
   </tr>
   </tbody>
 </table>
 
+  <div th:if="${!wishlist.empty}">
+    <ul class="pagination justify-content-center">
+
+      <!-- 이전 버튼 -->
+      <li class="page-item" th:classappend="${!wishlist.hasPrevious()} ? 'disabled'">
+        <a class="page-link"
+           th:if="${wishlist.hasPrevious()}"
+           th:href="@{|?page=${wishlist.number - 1}|}">
+          <span>이전</span>
+        </a>
+        <a class="page-link" th:unless="${wishlist.hasPrevious()}">
+          <span>이전</span>
+        </a>
+      </li>
+
+      <!-- 페이지 번호들 -->
+      <li th:each="page : ${#numbers.sequence(0, wishlist.totalPages - 1)}"
+          th:if="${page >= wishlist.number - 5 and page <= wishlist.number + 5}"
+          th:classappend="${page == wishlist.number} ? ' active'"
+          class="page-item">
+        <a class="page-link"
+           th:text="${page + 1}"
+           th:href="@{|?page=${page}|}"></a>
+      </li>
+
+      <!-- 다음 버튼 -->
+      <li class="page-item" th:classappend="${!wishlist.hasNext()} ? ' disabled'">
+        <a class="page-link"
+           th:if="${wishlist.hasNext()}"
+           th:href="@{|?page=${wishlist.number + 1}|}">
+          <span>다음</span>
+        </a>
+        <a class="page-link" th:unless="${wishlist.hasNext()}">
+          <span>다음</span>
+        </a>
+      </li>
+
+    </ul>
+  </div>
 
 </body>
 </div>

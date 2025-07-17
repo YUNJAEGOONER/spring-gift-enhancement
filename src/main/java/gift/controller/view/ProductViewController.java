@@ -3,7 +3,6 @@ package gift.controller.view;
 import gift.entity.Product;
 import gift.exception.product.ProductNotFoundException;
 import gift.service.ProductService;
-import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,17 +47,19 @@ public class ProductViewController {
     //특정 상품을 검색(상품명을 통한 검색)
     @GetMapping("/products/search")
     public String searchProduct(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
             @RequestParam(required = false) String name,
             Model model
     ) {
         //상품 검색하기에 아무런 상품명를 입력하지 않은 경우 -> 전체 상품을 조회하는 페이지로 이동
-        if(name == null){
-            return "redirect:/view/product/list";
+        if(name.isBlank()){
+            return "redirect:/view/products/list";
         }
-
-        List<Product> product = productService.searchProduct(name);
+        Page<Product> product = productService.searchProduct(name, page, size);
         model.addAttribute("productList", product);
-        return "/yjshop/user/home";
+        model.addAttribute("searchkeyword", name);
+        return "/yjshop/user/search";
     }
 
     @ExceptionHandler(ProductNotFoundException.class)
