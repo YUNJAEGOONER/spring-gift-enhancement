@@ -6,6 +6,7 @@ import gift.exception.product.ProductNotFoundException;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
 import java.util.List;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,8 +30,12 @@ public class ProductAdminViewController {
 
     //전체 상품 가져오기
     @GetMapping("/products")
-    public String adminProductList(Model model){
-        List<Product> productList = productService.findAll();
+    public String adminProductList(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            Model model
+    ){
+        Page<Product> productList = productService.findAll(page, size);
         model.addAttribute("productList", productList);
         return "/yjshop/admin/product/home";
     }

@@ -7,6 +7,7 @@ import gift.service.ProductService;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 //@ResponseBody + @Controller
@@ -51,9 +53,12 @@ public class ProductController {
     //read
     //전체 상품을 조회
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts() {
-        List<Product> productList = productService.findAll();
-        return new ResponseEntity<>(productList, HttpStatus.OK);
+    public ResponseEntity<List<Product>> getProducts(
+            @RequestParam(defaultValue = "0") int page, //현재 페이지
+            @RequestParam(defaultValue = "5") int size //크기(몇개의 상품을 가져올지)
+    ) {
+        Page<Product> productPage = productService.findAll(page, size);
+        return new ResponseEntity<>(productPage.getContent(), HttpStatus.OK);
     }
 
     //update

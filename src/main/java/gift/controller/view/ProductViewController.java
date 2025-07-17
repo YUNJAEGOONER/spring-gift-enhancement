@@ -4,6 +4,7 @@ import gift.entity.Product;
 import gift.exception.product.ProductNotFoundException;
 import gift.service.ProductService;
 import java.util.List;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,8 +24,12 @@ public class ProductViewController {
 
     //전체 상품을 조회
     @GetMapping("/products/list")
-    public String getProducts(Model model) {
-        List<Product> productList = productService.findAll();
+    public String getProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            Model model
+    ) {
+        Page<Product> productList = productService.findAll(page, size);
         model.addAttribute("productList", productList);
         return "/yjshop/user/home";
     }

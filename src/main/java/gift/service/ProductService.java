@@ -6,6 +6,9 @@ import gift.exception.ErrorCode;
 import gift.exception.product.ProductNotFoundException;
 import gift.repository.ProductRepository;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,8 +40,9 @@ public class ProductService {
     }
 
     //전체 상품 검색
-    public List<Product> findAll(){
-        return productRepository.findAll();
+    public Page<Product> findAll(int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        return productRepository.findAll(pageable);
     }
 
     //상품 수정
