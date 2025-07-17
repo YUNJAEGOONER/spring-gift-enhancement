@@ -8,9 +8,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 public class Member {
@@ -27,9 +24,6 @@ public class Member {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role = Role.USER; //회원 가입 -> 일반 회원
-
-    @OneToMany(mappedBy = "member")
-    private List<WishList> wishLists = new ArrayList<>();
 
     public void changeInfo(String email, String password){
         this.email = email;
@@ -59,7 +53,4 @@ public class Member {
         return role;
     }
 
-    public List<WishList> getWishLists() {
-        return wishLists;
-    }
 }
