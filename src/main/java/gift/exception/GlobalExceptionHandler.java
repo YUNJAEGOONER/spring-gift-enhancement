@@ -1,27 +1,38 @@
 package gift.exception;
 
-import org.springframework.ui.Model;
+import gift.exception.member.JWTAuthException;
+import gift.exception.member.LoginError;
+import gift.exception.member.MemberNotFoundException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice //애플리케이션 전역에서 발생하는 예외를 처리하기 위함
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(MyException.class)
-    public String handleMyException(MyException e, Model model){
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-        model.addAttribute("errorMsg", e.getErrorCode().getMessage());
-        if(e.getErrorCode().equals(ErrorCode.PRODUCT_NOT_FOUND)) {
-            return "ProoductNotFoun";
-        }
-        if(e.getErrorCode().equals(ErrorCode.MEMBER_NOT_FOUND)){
-            return "members/membernotfound";
-        }
-        if(e.getErrorCode().equals(ErrorCode.JWT_VALIDATION_FAIL)){
-            return "redirect:/view/products/list";
-        }
+    @ExceptionHandler(JWTAuthException.class)
+    public String satustUnauthorizedHandler(JWTAuthException e, HttpServletResponse response) {
+        log.info(e.getErrorCode().getMessage());
+        Cookie cookie = new Cookie("toke", null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return "redirect:/view/loginform";
+    }
 
-        return null;
+    @ExceptionHandler(LoginError.class)
+    public String LoginErrorHandler(LoginError e) {
+        return "redirect:/view/loginform";
+    }
+
+    @ExceptionHandler(MemberNotFoundException.class)
+    public String satustUnauthorizedHandler(MemberNotFoundException e, HttpServletResponse response) {
+        log.info(e.getErrorCode().getMessage());
+        return "/yjshop/admin/member/membernotfound";
     }
 
 }

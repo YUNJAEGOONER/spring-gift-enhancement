@@ -3,6 +3,7 @@ package gift.infra;
 import gift.entity.Member;
 import gift.service.JwtAuthService;
 import gift.service.MemberService;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,10 +37,17 @@ public class LoggedInMemberArgumentResolver implements HandlerMethodArgumentReso
             NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 
         HttpServletRequest httpServletRequest = (HttpServletRequest) webRequest.getNativeRequest();
-        String token = httpServletRequest.getHeader("Authorization"); //토큰 꺼내기
-        Long id = jwtAuthService.getMemberId(token); //토큰에서 정보 가져오기
 
+        String token = "";
+        Cookie[] cookies = httpServletRequest.getCookies(); //토큰 꺼내기
+        for(Cookie c : cookies){
+            if(c.getName().equals("token")){
+                token = c.getValue();
+            }
+        }
+
+        Long id = jwtAuthService.getMemberId(token); //토큰에서 정보 가져오기
         log.info("LoggedInMemberArgumentResolver(memberId = " + id.toString() + ")");
-        return memberService.findMember(id).get();
+        return memberService.findMember(id);
     }
 }

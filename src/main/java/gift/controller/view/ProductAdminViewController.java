@@ -1,25 +1,19 @@
-package gift.yjshop.controller;
+package gift.controller.view;
 
 import gift.dto.ProductRequestDto;
 import gift.entity.Product;
-import gift.exception.ErrorCode;
-import gift.exception.MyException;
+import gift.exception.product.ProductNotFoundException;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -27,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/view/admin")
 public class ProductAdminViewController {
 
-    private static final Logger log = LoggerFactory.getLogger(ProductAdminViewController.class);
     private final ProductService productService;
 
     public ProductAdminViewController(ProductService productService) {
@@ -60,12 +53,8 @@ public class ProductAdminViewController {
         if(id == null){
             return "redirect:/view/admin/products";
         }
-
-        Optional<Product> product = productService.findOne(id);
-        if (product.isEmpty()) {
-            throw new MyException(ErrorCode.PRODUCT_NOT_FOUND);
-        }
-        model.addAttribute("product", product.get());
+        Product product = productService.findOne(id);
+        model.addAttribute("product", product);
         return "/yjshop/admin/product/productinfo";
     }
 
@@ -99,7 +88,7 @@ public class ProductAdminViewController {
             @PathVariable Long id,
             Model model
     ) {
-        Product product = productService.findOne(id).get();
+        Product product = productService.findOne(id);
         model.addAttribute("product", product);
         model.addAttribute("productRequestDto", new ProductRequestDto());
         return "/yjshop/admin/product/modifyform";
@@ -114,7 +103,7 @@ public class ProductAdminViewController {
             Model model
     ) {
         if(bindingResult.hasErrors()){
-            Product product = productService.findOne(id).get();
+            Product product = productService.findOne(id);
             model.addAttribute("product", product);
             return "/yjshop/admin/product/modifyform";
         }
@@ -122,9 +111,10 @@ public class ProductAdminViewController {
         return "redirect:/view/admin/products";
     }
 
-    @ExceptionHandler(MyException.class)
-    public String MyExceptionHandler(MyException e, Model model){
+    @ExceptionHandler(ProductNotFoundException.class)
+    public String productNotFound(ProductNotFoundException e, Model model) {
         model.addAttribute("errorMsg", e.getErrorCode().getMessage());
         return "/yjshop/admin/product/productnotfound";
     }
+
 }

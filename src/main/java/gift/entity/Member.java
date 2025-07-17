@@ -1,18 +1,33 @@
 package gift.entity;
 
 import gift.dto.Role;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
+@Entity
 public class Member {
-    private Long memberId;
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
     private String password; // 암호화된 형태로 저장하기
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Role role = Role.USER; //회원 가입 -> 일반 회원
 
-    public Member(Long memberId, String email, String password, Role role){
-        this.memberId = memberId;
+    public void changeInfo(String email, String password){
         this.email = email;
         this.password = password;
-        this.role = role;
     }
 
     public Member(String email, String password){
@@ -20,8 +35,10 @@ public class Member {
         this.password = password;
     }
 
+    protected Member(){}
+
     public Long getMemberId(){
-        return memberId;
+        return id;
     }
 
     public String getEmail(){
@@ -35,4 +52,5 @@ public class Member {
     public Role getRole() {
         return role;
     }
+
 }

@@ -1,15 +1,17 @@
-package gift.controller;
+package gift.controller.api;
 
 import gift.dto.wish.WishRequestDto;
 import gift.dto.wish.WishResponseDto;
-import gift.infra.LoggedInMember;
 import gift.entity.Member;
+import gift.exception.MyException;
+import gift.infra.LoggedInMember;
 import gift.service.WishListService;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,8 +44,7 @@ public class WishListController {
             @RequestBody @Valid WishRequestDto wishRequestDto, //상품ID, 수량
             @LoggedInMember Member member
     ){
-        Long memberId = member.getMemberId();
-        WishResponseDto wishResponseDto = wishListService.addToWishList(memberId, wishRequestDto);
+        WishResponseDto wishResponseDto = wishListService.addToWishList(member.getMemberId(), wishRequestDto);
         return new ResponseEntity<>(wishResponseDto, HttpStatus.CREATED);
     }
 
@@ -56,24 +57,27 @@ public class WishListController {
 
     //동일한 상품을 추가하는 경우 (장바구니 내 물품 수량 조절)
     @PatchMapping("/add/{wishListId}")
-    public ResponseEntity<List<WishResponseDto>> addItem(
+    public ResponseEntity<WishResponseDto> addItem(
             @PathVariable Long wishListId,
             @LoggedInMember Member member
     ){
-        Long memberId = member.getMemberId();
-        List<WishResponseDto> myWishList = wishListService.changeQuantity(memberId, wishListId, 1);
+        WishResponseDto myWishList = wishListService.changeQuantity(wishListId, 1);
         return ResponseEntity.ok(myWishList);
     }
 
     //동일한 상품을 제거하는 경우 (장바구니 내 물품 수량 조절)
     @PatchMapping("/subtract/{wishListId}")
-    public ResponseEntity<List<WishResponseDto>> subtractItem(
+    public ResponseEntity<WishResponseDto> subtractItem(
             @PathVariable Long wishListId,
             @LoggedInMember Member member
     ){
-        Long memberId = member.getMemberId();
-        List<WishResponseDto> myWishList = wishListService.changeQuantity(memberId, wishListId, -1);
+        WishResponseDto myWishList = wishListService.changeQuantity(wishListId, -1);
         return ResponseEntity.ok(myWishList);
+    }
+
+    @ExceptionHandler(MyException.class)
+    public ResponseEntity<String> MemberControllerExceptionHandler(MyException e){
+        return ResponseEntity.status(e.getErrorCode().getStatusCode()).body(e.getErrorCode().getMessage());
     }
 
 }

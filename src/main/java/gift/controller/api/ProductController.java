@@ -1,34 +1,28 @@
-package gift.controller;
+package gift.controller.api;
 
 import gift.dto.ProductRequestDto;
 import gift.entity.Product;
+import gift.exception.MyException;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
 import java.net.URI;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 //@ResponseBody + @Controller
 @RestController
 @RequestMapping("/api")
 public class ProductController {
-
 
     private final ProductService productService;
 
@@ -50,11 +44,8 @@ public class ProductController {
     //특정 상품을 조회(id)
     @GetMapping("/products/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable Long id) {
-        if(productService.findOne(id).isPresent()){
-            Product product = productService.findOne(id).get();
-            return new ResponseEntity<>(product, HttpStatus.OK);
-        }
-        return ResponseEntity.notFound().build();
+        Product product = productService.findOne(id);
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
     //read
@@ -73,8 +64,7 @@ public class ProductController {
             @PathVariable Long id
     ) {
         productService.modify(id, requestDto);
-        //특정 상품을 찾는 기능과 종속성을 가짐으로 좋지 않은 코드인지, 상관 없는지 궁금합니다.
-        Product modifiedProduct = productService.findOne(id).get();
+        Product modifiedProduct = productService.findOne(id);
         return new ResponseEntity<>(modifiedProduct, HttpStatus.OK);
     }
 
@@ -84,6 +74,11 @@ public class ProductController {
     public ResponseEntity<Void> removeProduct(@PathVariable Long id) {
         productService.remove(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @ExceptionHandler(MyException.class)
+    public ResponseEntity<String> MemberControllerExceptionHandler(MyException e){
+        return ResponseEntity.status(e.getErrorCode().getStatusCode()).body(e.getErrorCode().getMessage());
     }
 
 }

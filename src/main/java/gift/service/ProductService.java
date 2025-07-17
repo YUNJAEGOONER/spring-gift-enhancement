@@ -2,12 +2,15 @@ package gift.service;
 
 import gift.dto.ProductRequestDto;
 import gift.entity.Product;
+import gift.exception.ErrorCode;
+import gift.exception.product.ProductNotFoundException;
 import gift.repository.ProductRepository;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class ProductService {
 
     private final ProductRepository productRepository;
@@ -18,33 +21,36 @@ public class ProductService {
 
     //상품 추가
     public Long add(ProductRequestDto requestDto){
-        return productRepository.add(requestDto);
+        Product product = new Product(requestDto.getName(), requestDto.getPrice(), requestDto.getImageUrl());
+        return productRepository.save(product).getId();
     }
 
     //상품 검색
-    public Optional<Product> findOne(Long id){
-        return productRepository.findById(id);
+    public Product findOne(Long id){
+        Product product = productRepository.findProductById(id).orElseThrow(()-> new ProductNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
+        return product;
     }
 
     //상품 검색
     public List<Product> searchProduct(String name){
-        String keyword = "%" + name + "%";
-        return productRepository.findProductByName(keyword);
+        return productRepository.findProductByNameContaining(name);
     }
 
     //전체 상품 검색
     public List<Product> findAll(){
-        return productRepository.findProducts();
+        return productRepository.findAll();
     }
 
     //상품 수정
     public void modify(Long id, ProductRequestDto requestDto){
-        productRepository.modifyProduct(id, requestDto);
+        Product product = findOne(id);
+        product.changeProductInfo(requestDto.getName(), requestDto.getPrice(), requestDto.getImageUrl());
+        productRepository.save(product);
     }
 
     //상품 삭제
     public void remove(Long id){
-        productRepository.removeProduct(id);
+        productRepository.removeProductById(id);
     }
 
 }

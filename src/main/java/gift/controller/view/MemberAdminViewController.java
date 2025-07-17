@@ -1,13 +1,12 @@
-package gift.yjshop.controller;
+package gift.controller.view;
 
 import gift.dto.MemberRequestDto;
 import gift.entity.Member;
 import gift.exception.ErrorCode;
-import gift.exception.MyException;
+import gift.exception.member.MemberNotFoundException;
 import gift.service.MemberService;
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -46,11 +45,8 @@ public class MemberAdminViewController {
         if(email.isEmpty()){
             return "redirect:/view/admin/members";
         }
-        Optional<Member> member = memberService.getMemberByEmail(email);
-        if(member.isEmpty()){
-            throw new MyException(ErrorCode.MEMBER_NOT_FOUND);
-        }
-        model.addAttribute("member", member.get());
+        Member member = memberService.getMemberByEmail(email).orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
+        model.addAttribute("member", member);
         return "/yjshop/admin/member/memberinfo";
     }
 
@@ -87,7 +83,7 @@ public class MemberAdminViewController {
             @PathVariable Long id,
             Model model
     ){
-        Member member = memberService.findMember(id).get();
+        Member member = memberService.findMember(id);
         model.addAttribute("memberRequestDto", new MemberRequestDto(null, null));
         model.addAttribute("member", member);
         return "/yjshop/admin/member/modifyForm";
@@ -101,7 +97,7 @@ public class MemberAdminViewController {
             @PathVariable Long id,
             Model model
     ){
-        Member member = memberService.findMember(id).get();
+        Member member = memberService.findMember(id);
 
         if(!memberService.checkAvailableModify(id, memberRequestDto)){
             bindingResult.addError(new FieldError("memberRequestDto", "email", "이미 사용중인 이메일 입니다."));
@@ -112,8 +108,7 @@ public class MemberAdminViewController {
             return "/yjshop/admin/member/modifyForm";
         }
 
-        memberService.modifyMember(id, memberRequestDto);
-        String email = memberService.getMemberByEmail(memberRequestDto.email()).get().getEmail();
+        String email = memberService.modifyMember(id, memberRequestDto).getEmail();
         return "redirect:/view/admin/members/search?email=" + email;
     }
 
@@ -124,18 +119,10 @@ public class MemberAdminViewController {
         return "redirect:/view/admin/members";
     }
 
-    @ExceptionHandler(MyException.class)
-    public String MyExceptionHandler(MyException e, Model model){
+    @ExceptionHandler(MemberNotFoundException.class)
+    public String productNotFound(MemberNotFoundException e, Model model) {
         model.addAttribute("errorMsg", e.getErrorCode().getMessage());
-
-        if(e.getErrorCode().equals(ErrorCode.JWT_VALIDATION_FAIL)){
-            return "redirect:/view/login";
-        }
-
         return "/yjshop/admin/member/membernotfound";
     }
-
-
-
 
 }

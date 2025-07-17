@@ -19,9 +19,4 @@ public class APIExceptionHandler {
         return ResponseEntity.badRequest().body(errors);
     }
 
-    @ExceptionHandler(MyException.class)
-    public ResponseEntity<String> myExceptionHandler(MyException e){
-        return ResponseEntity.status(e.getErrorCode().getStatusCode()).body(e.getErrorCode().getMessage());
-    }
-
 }

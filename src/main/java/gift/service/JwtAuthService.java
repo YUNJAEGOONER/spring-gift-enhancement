@@ -2,8 +2,7 @@ package gift.service;
 
 import gift.dto.Role;
 import gift.exception.ErrorCode;
-import gift.exception.MyException;
-import groovy.util.logging.Slf4j;
+import gift.exception.member.JWTAuthException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
@@ -11,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 //JWT와 관련된 서비스 :
-@Slf4j
 @Service
 public class JwtAuthService {
 
@@ -19,8 +17,7 @@ public class JwtAuthService {
     private final String secretKey = "ComeOnYouGunnersNorthLondonisRedNorthLondonFOREVER";
 
     //payload의 정보를 추출하는 함수
-    public Long getMemberId(String bearerToken){
-        String token = bearerToken.split(" ")[1]; //접두사 제거
+    public Long getMemberId(String token){
         return Jwts.parser()
                 .verifyWith(Keys.hmacShaKeyFor(secretKey.getBytes()))
                 .build()
@@ -30,8 +27,7 @@ public class JwtAuthService {
     }
 
     //payload의 정보를 추출하는 함수
-    public String getMemberRole(String bearerToken){
-        String token = bearerToken.split(" ")[1]; //접두사 제거
+    public String getMemberRole(String token){
         return Jwts.parser()
                 .verifyWith(Keys.hmacShaKeyFor(secretKey.getBytes()))
                 .build()
@@ -40,7 +36,7 @@ public class JwtAuthService {
                 .get("role", String.class);
     }
 
-    //TODO: 토큰 생성
+    //토큰 생성
     public String createJwt(String email, Long memberId, Role role){
         return Jwts.builder()
                 .claim("email", email)
@@ -50,21 +46,18 @@ public class JwtAuthService {
                 .compact();
     }
 
-    //TODO: 토큰을 검증 -> 로그인 이후의 동작 (wishList -> 사용자별 wishList 존재)
-    public void checkValidation(String bearerToken) {
-
-        if(bearerToken==null || !bearerToken.startsWith("Bearer ")){
-            throw new MyException(ErrorCode.JWT_VALIDATION_FAIL);
+    //토큰을 검증 -> 로그인 이후의 동작 (wishList -> 사용자별 wishList 존재)
+    public void checkValidation(String token) {
+        if(token==null){
+            throw new JWTAuthException(ErrorCode.JWT_VALIDATION_FAIL);
         }
-
         try{
-            String token = bearerToken.split(" ")[1]; //Bearer 접두사 제거
             Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secretKey.getBytes())).build().parseSignedClaims(token);
         }
         catch (Exception e){
             //Authorization 헤더가 유효하지 않거나 토큰이 유효하지 않은 경우 401 Unauthorized 반환
             log.info("토큰검증에 실패했습니다.");
-            throw new MyException(ErrorCode.JWT_VALIDATION_FAIL);
+            throw new JWTAuthException(ErrorCode.JWT_VALIDATION_FAIL);
         }
     }
 

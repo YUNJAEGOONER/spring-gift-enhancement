@@ -1,8 +1,8 @@
-
 package gift.infra.filter;
 
-import gift.exception.MyException;
+import gift.exception.member.LoginError;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,12 +18,11 @@ public class FilterExceptionHandler extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             filterChain.doFilter(request, response);
-        } catch (MyException e) {
-            logger.info("[FilterExceptionHandler]"+ e.getErrorCode());
-            String msg = e.getErrorCode().getMessage();
-            response.setStatus(e.getErrorCode().getStatusCode().value());
-            response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write("{\"message\":\"" + msg + "\"}");
+        } catch (LoginError e) {
+            logger.info("[FilterExceptionHandlerForView]" + e.getErrorCode());
+            request.setAttribute("errormsg", e.getErrorCode().getMessage());
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/view/login/error");
+            dispatcher.forward(request, response);
         }
     }
 }

@@ -1,11 +1,9 @@
-package gift.yjshop.controller;
+package gift.controller.view;
 
 import gift.entity.Product;
-import gift.exception.ErrorCode;
-import gift.exception.MyException;
+import gift.exception.product.ProductNotFoundException;
 import gift.service.ProductService;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/view")
 @Controller
 public class ProductViewController {
-
 
     private final ProductService productService;
 
@@ -38,11 +35,8 @@ public class ProductViewController {
             @RequestParam(required = false) Long id,
             Model model
     ) {
-        Optional<Product> product = productService.findOne(id);
-        if (product.isEmpty()) {
-            throw new MyException(ErrorCode.PRODUCT_NOT_FOUND);
-        }
-        model.addAttribute("product", product.get());
+        Product product = productService.findOne(id);
+        model.addAttribute("product", product);
         return "/yjshop/user/productinfo";
     }
 
@@ -62,10 +56,10 @@ public class ProductViewController {
         return "/yjshop/user/home";
     }
 
-    @ExceptionHandler(MyException.class)
-    public String MyExceptionHandler(MyException e, Model model){
+    @ExceptionHandler(ProductNotFoundException.class)
+    public String productNotFound(ProductNotFoundException e, Model model) {
         model.addAttribute("errorMsg", e.getErrorCode().getMessage());
-        return "/yjshop/admin/member/membernotfound";
+        return "/yjshop/user/productnotfound";
     }
 
 }

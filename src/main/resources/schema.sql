@@ -1,4 +1,4 @@
-create table products(
+create table product(
     id bigint auto_increment,
     name varchar(255) not null,
     price int not null,
@@ -6,7 +6,7 @@ create table products(
     primary key (id)
 );
 
-create table members(
+create table member(
     id bigint auto_increment,
     email varchar(255) not null,
     password varchar(255) not null,
@@ -15,12 +15,12 @@ create table members(
     unique (email)
 );
 
-create table wishList(
+create table wishlist(
     id bigint auto_increment,
-    memberid bigint not null,
-    productid bigint not null,
+    member_id bigint not null,
+    product_id bigint not null,
     quantity int not null,
     primary key (id),
-    foreign key (productid) references products(id),
-    foreign key (memberid) references members(id)
+    foreign key (product_id) references product(id),
+    foreign key (member_id) references member(id)
 );
