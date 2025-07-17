@@ -53,8 +53,7 @@ public class WishListService {
         List<WishList> wishListList = wishListRepository.findWishListByMemberId(memberId);
         List<WishResponseDto> responseDtoList = new ArrayList<>();
         for(WishList wishList : wishListList){
-            Product product = productRepository.findProductById(wishList.getProduct().getId()).get();
-            responseDtoList.add(toWishResponseDto(wishList, product));
+            responseDtoList.add(toWishResponseDto(wishList, wishList.getProduct()));
         }
         return responseDtoList;
     }
