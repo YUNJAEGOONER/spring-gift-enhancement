@@ -90,4 +90,3 @@ values('USER','testuser1@naver.com', '12345678');
 
 insert into member (role, email, password)
 values('USER','testuser2@apple.com', '12345678');
-

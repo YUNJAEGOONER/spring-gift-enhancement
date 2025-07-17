@@ -15,6 +15,9 @@ import gift.repository.WishListRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,13 +54,17 @@ public class WishListService {
         return new WishResponseDto(wishList.getId(), product.getName(), product.getImageUrl(), wishList.getQuantity(), totalPrice);
     }
 
-    public List<WishResponseDto> getList(Long memberId){
-        List<WishList> wishListList = wishListRepository.findWishListByMemberId(memberId);
-        List<WishResponseDto> responseDtoList = new ArrayList<>();
-        for(WishList wishList : wishListList){
-            responseDtoList.add(toWishResponseDto(wishList, wishList.getProduct()));
-        }
-        return responseDtoList;
+    public Page<WishResponseDto> getList(Long memberId, int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<WishList> wishListList = wishListRepository.findWishListByMemberId(pageable, memberId);
+        return wishListList.map(
+                wishList -> new WishResponseDto(
+                        wishList.getId(),
+                        wishList.getProduct().getName(),
+                        wishList.getProduct().getImageUrl(),
+                        wishList.getQuantity(),
+                        wishList.getQuantity() * wishList.getProduct().getPrice())
+        );
     }
 
     public void removeFromWishList(Long wishListId){

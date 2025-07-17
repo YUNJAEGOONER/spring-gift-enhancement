@@ -10,6 +10,8 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @DataJpaTest
 class WishListRepositoryTest {
@@ -68,7 +70,8 @@ class WishListRepositoryTest {
         Product product2 = productRepository.save(new Product("LG Gram", 1200000, "image"));
         wishListRepository.save(new WishList(member, product2, 3));
 
-        List<WishList> wishListByMember = wishListRepository.findWishListByMemberId(member.getMemberId());
+        Pageable pageable = PageRequest.of(0, 10);
+        List<WishList> wishListByMember = wishListRepository.findWishListByMemberId(pageable, member.getMemberId()).getContent();
         assertThat(wishListByMember.size()).isEqualTo(2);
     }
 
