@@ -38,7 +38,9 @@ public class WishListService {
         Optional<WishList> wishListOptional = wishListRepository.findWishListByMemberIdAndProductId(memberId, requestDto.productId());
         if (wishListOptional.isPresent()) {
             //이미 장바구니에 해당 상품이 있는 경우에는 수량만 업데이트
-            return changeQuantity(wishListOptional.get().getId(), requestDto.quantity());
+            WishList wishList = wishListOptional.get();
+            wishList.updateQuantity(requestDto.quantity());
+            return toWishResponseDto(wishList, product);
         }
         WishList wishList = wishListRepository.save(new WishList(member, product, requestDto.quantity()));
         return toWishResponseDto(wishList, product);
@@ -69,7 +71,6 @@ public class WishListService {
             removeFromWishList(wishListId);
             return toWishResponseDto(wishList, wishList.getProduct());
         }
-        wishListRepository.save(wishList);
         return toWishResponseDto(wishList, wishList.getProduct());
     }
 
