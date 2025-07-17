@@ -12,8 +12,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 @Service
+@Transactional
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -33,21 +33,27 @@ public class MemberService {
         return memberRepository.save(createdMember);
     }
 
+
     //로그인 기능 -> 이메일과 비밀번호가 일치하는지 확인하는 로직
+    @Transactional(readOnly = true)
     public Member checkMember(String email, String password){
         return memberRepository.findMemberByEmailAndPassword(email, password).orElseThrow(() -> new LoginError(ErrorCode.LOGIN_UNAVAILABLE));
     }
 
     //특정 멤버를 조회하는 기능
+    @Transactional(readOnly = true)
     public Member findMember(Long id){
         return memberRepository.findMemberById(id).orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
     }
 
+    @Transactional(readOnly = true)
     public Optional<Member> getMemberByEmail(String email){
         return memberRepository.findMemberByEmail(email);
     }
 
+
     //멤버의 정보 수정이 가능한지 확인하는 기능
+    @Transactional(readOnly = true)
     public boolean checkAvailableModify(Long id, MemberRequestDto memberRequestDto){
         Optional<Member> member = memberRepository.findMemberByEmail(memberRequestDto.email());
         //이메일을 변경하는 경우 (이메일 + 비밀번호 모두 변경)
@@ -72,6 +78,7 @@ public class MemberService {
         memberRepository.removeMemberById(id);
     }
 
+    @Transactional(readOnly = true)
     public List<Member> getAllMembers(){
         return memberRepository.findAll();
     }

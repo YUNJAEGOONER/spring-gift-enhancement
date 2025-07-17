@@ -27,19 +27,22 @@ public class ProductService {
         return productRepository.save(product).getId();
     }
 
-    //상품 검색
+    //상품 검색(id로)
+    @Transactional(readOnly = true)
     public Product findOne(Long id){
         Product product = productRepository.findProductById(id).orElseThrow(()-> new ProductNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
         return product;
     }
 
     //상품 검색
+    @Transactional(readOnly = true)
     public Page<Product> searchProduct(String name, int page, int size){
         Pageable pageable = PageRequest.of(page, size);
         return productRepository.findProductByNameContaining(name, pageable);
     }
 
     //전체 상품 검색
+    @Transactional(readOnly = true)
     public Page<Product> findAll(int page, int size){
         Pageable pageable = PageRequest.of(page, size);
         return productRepository.findAll(pageable);

@@ -52,6 +52,7 @@ public class WishListService {
         return new WishResponseDto(wishList.getId(), product.getName(), product.getImageUrl(), wishList.getQuantity(), totalPrice);
     }
 
+    @Transactional(readOnly = true)
     public Page<WishResponseDto> getList(Long memberId, int page, int size){
         Pageable pageable = PageRequest.of(page, size);
         Page<WishList> wishListList = wishListRepository.findWishListByMemberId(pageable, memberId);
