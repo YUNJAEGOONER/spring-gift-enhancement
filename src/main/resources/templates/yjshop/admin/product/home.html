@@ -97,5 +97,42 @@
     </tr>
     </tbody>
   </table>
+
+  <div th:if="${!productList.empty}">
+    <ul class="pagination justify-content-center">
+      <!-- 이전 버튼 -->
+      <li class="page-item" th:classappend="${!productList.hasPrevious()} ? 'disabled'">
+        <a class="page-link"
+           th:if="${productList.hasPrevious()}"
+           th:href="@{|?page=${productList.number - 1}|}">
+          <span>이전</span>
+        </a>
+        <a class="page-link" th:unless="${productList.hasPrevious()}">
+          <span>이전</span>
+        </a>
+      </li>
+      <!-- 페이지 번호들 -->
+      <li th:each="page : ${#numbers.sequence(0, productList.totalPages - 1)}"
+          th:if="${page >= productList.number - 5 and page <= productList.number + 5}"
+          th:classappend="${page == productList.number} ? ' active'"
+          class="page-item">
+        <a class="page-link"
+           th:text="${page + 1}"
+           th:href="@{|?page=${page}|}"></a>
+      </li>
+      <!-- 다음 버튼 -->
+      <li class="page-item" th:classappend="${!productList.hasNext()} ? 'disabled'">
+        <a class="page-link"
+           th:if="${productList.hasNext()}"
+           th:href="@{|?page=${productList.number + 1}|}">
+          <span>다음</span>
+        </a>
+        <a class="page-link" th:unless="${productList.hasNext()}">
+          <span>다음</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
 </div>
 </html>
