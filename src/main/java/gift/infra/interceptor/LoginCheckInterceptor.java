@@ -24,8 +24,9 @@ public class LoginCheckInterceptor implements HandlerInterceptor{
         //컨트롤러가 호출되기 전에 실행됨
         log.info("[LoginChecker] preHandle");
         JwtChecker jwtChecker = (token, adminChecker) -> true;
-        String token = jwtChecker.checkJwtAvaliable(request, jwtAuthService);
-        return jwtChecker.checkrole(token, jwtAuthService);
+        String token = jwtChecker.checkJwtAvailable(request);
+        jwtAuthService.checkValidation(token);
+        return jwtChecker.checkRole(token, jwtAuthService);
     }
 
 }

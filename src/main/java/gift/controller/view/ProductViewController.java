@@ -1,6 +1,8 @@
 package gift.controller.view;
 
 import gift.entity.Product;
+import gift.exception.ErrorCode;
+import gift.exception.page.PageIndexException;
 import gift.exception.product.ProductNotFoundException;
 import gift.service.ProductService;
 import org.springframework.data.domain.Page;
@@ -28,6 +30,9 @@ public class ProductViewController {
             @RequestParam(defaultValue = "5") int size,
             Model model
     ) {
+        if(page < 0 || size < 0){
+            throw new PageIndexException(ErrorCode.PAGE_INDEX_ERROR);
+        }
         Page<Product> productList = productService.findAll(page, size);
         model.addAttribute("productList", productList);
         return "/yjshop/user/home";
@@ -56,16 +61,13 @@ public class ProductViewController {
         if(name.isBlank()){
             return "redirect:/view/products/list";
         }
+        if(page < 0 || size < 0){
+            throw new PageIndexException(ErrorCode.PAGE_INDEX_ERROR);
+        }
         Page<Product> product = productService.searchProduct(name, page, size);
         model.addAttribute("productList", product);
         model.addAttribute("searchkeyword", name);
         return "/yjshop/user/search";
-    }
-
-    @ExceptionHandler(ProductNotFoundException.class)
-    public String productNotFound(ProductNotFoundException e, Model model) {
-        model.addAttribute("errorMsg", e.getErrorCode().getMessage());
-        return "/yjshop/user/productnotfound";
     }
 
 }

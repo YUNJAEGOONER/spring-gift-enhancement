@@ -26,8 +26,9 @@ public class AdminCheckInterceptor implements HandlerInterceptor {
         //컨트롤러가 호출되기 전에 실행됨
         log.info("[adminchecker] preHandle");
         JwtChecker jwtChecker = (token, adminChecker) -> Role.valueOf(jwtAuthService.getMemberRole(token)).equals(Role.ADMIN);
-        String token = jwtChecker.checkJwtAvaliable(request, jwtAuthService);
-        if(!jwtChecker.checkrole(token, jwtAuthService)){
+        String token = jwtChecker.checkJwtAvailable(request);
+        jwtAuthService.checkValidation(token);
+        if(!jwtChecker.checkRole(token, jwtAuthService)){
             log.warn("관리자 페이지 입니다.");
             throw new JWTAuthException(ErrorCode.ADMIN_PAGE);
         }

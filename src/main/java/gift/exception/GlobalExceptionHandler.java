@@ -3,6 +3,7 @@ package gift.exception;
 import gift.exception.member.JWTAuthException;
 import gift.exception.member.LoginError;
 import gift.exception.member.MemberNotFoundException;
+import gift.exception.page.PageIndexException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -32,7 +33,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MemberNotFoundException.class)
     public String satustUnauthorizedHandler(MemberNotFoundException e, HttpServletResponse response) {
         log.info(e.getErrorCode().getMessage());
-        return "/yjshop/admin/member/membernotfound";
+        return "redirect:/view/loginform";
     }
+
+    @ExceptionHandler(PageIndexException.class)
+    public String satustUnauthorizedHandler(PageIndexException e, HttpServletResponse response) {
+        log.info(e.getErrorCode().getMessage());
+        return "redirect:/view/products/list";
+    }
+
 
 }

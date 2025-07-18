@@ -2,9 +2,12 @@ package gift.controller.api;
 
 import gift.dto.ProductRequestDto;
 import gift.entity.Product;
+import gift.exception.ErrorCode;
 import gift.exception.MyException;
+import gift.exception.page.PageIndexException;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import java.net.URI;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -57,6 +60,9 @@ public class ProductController {
             @RequestParam(defaultValue = "0") int page, //현재 페이지
             @RequestParam(defaultValue = "5") int size //크기(몇개의 상품을 가져올지)
     ) {
+        if(page < 0 || size < 0){
+            throw new PageIndexException(ErrorCode.PAGE_INDEX_ERROR);
+        }
         Page<Product> productPage = productService.findAll(page, size);
         return new ResponseEntity<>(productPage.getContent(), HttpStatus.OK);
     }
