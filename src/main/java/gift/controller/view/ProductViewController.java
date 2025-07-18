@@ -33,8 +33,12 @@ public class ProductViewController {
         if(page < 0 || size < 0){
             throw new PageIndexException(ErrorCode.PAGE_INDEX_ERROR);
         }
-        Page<Product> productList = productService.findAll(page, size);
-        model.addAttribute("productList", productList);
+        Page<Product> productPage = productService.findAll(page, size);
+        model.addAttribute("productList", productPage);
+        if(productPage.getTotalPages() <= page){
+            return "redirect:/view/products/list?page=" + (productPage.getTotalPages() - 1);
+        }
+        System.out.println("productPage = " + productPage.getTotalPages());
         return "/yjshop/user/home";
     }
 
@@ -64,8 +68,11 @@ public class ProductViewController {
         if(page < 0 || size < 0){
             throw new PageIndexException(ErrorCode.PAGE_INDEX_ERROR);
         }
-        Page<Product> product = productService.searchProduct(name, page, size);
-        model.addAttribute("productList", product);
+        Page<Product> productPage = productService.searchProduct(name, page, size);
+        if(productPage.getTotalPages() <= page){
+            throw new PageIndexException(ErrorCode.PAGE_INDEX_ERROR);
+        }
+        model.addAttribute("productList", productPage);
         model.addAttribute("searchkeyword", name);
         return "/yjshop/user/search";
     }

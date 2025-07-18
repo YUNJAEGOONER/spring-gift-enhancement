@@ -64,6 +64,10 @@ public class ProductController {
             throw new PageIndexException(ErrorCode.PAGE_INDEX_ERROR);
         }
         Page<Product> productPage = productService.findAll(page, size);
+        System.out.println("productPage = " + productPage.getTotalPages());
+        if(productPage.getTotalPages() <= page){
+            throw new PageIndexException(ErrorCode.PAGE_INDEX_ERROR);
+        }
         return new ResponseEntity<>(productPage.getContent(), HttpStatus.OK);
     }
 
