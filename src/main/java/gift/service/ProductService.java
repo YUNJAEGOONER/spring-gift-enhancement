@@ -5,7 +5,9 @@ import gift.entity.Product;
 import gift.exception.ErrorCode;
 import gift.exception.product.ProductNotFoundException;
 import gift.repository.ProductRepository;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,20 +27,25 @@ public class ProductService {
         return productRepository.save(product).getId();
     }
 
-    //상품 검색
+    //상품 검색(id로)
+    @Transactional(readOnly = true)
     public Product findOne(Long id){
         Product product = productRepository.findProductById(id).orElseThrow(()-> new ProductNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
         return product;
     }
 
     //상품 검색
-    public List<Product> searchProduct(String name){
-        return productRepository.findProductByNameContaining(name);
+    @Transactional(readOnly = true)
+    public Page<Product> searchProduct(String name, int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        return productRepository.findProductByNameContaining(name, pageable);
     }
 
     //전체 상품 검색
-    public List<Product> findAll(){
-        return productRepository.findAll();
+    @Transactional(readOnly = true)
+    public Page<Product> findAll(int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        return productRepository.findAll(pageable);
     }
 
     //상품 수정

@@ -6,7 +6,7 @@ import gift.entity.Member;
 import gift.infra.LoggedInMember;
 import gift.service.WishListService;
 import jakarta.validation.Valid;
-import java.util.List;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RequestMapping("/view/my")
 @Controller
@@ -29,10 +30,12 @@ public class WishListViewController {
     //WishList에 담긴 상품 목록을 조회
     @GetMapping("/wishlist")
     public String getWishList(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
             @LoggedInMember Member member,
             Model model
     ){
-        List<WishResponseDto> myWishList = wishListService.getList(member.getMemberId());
+        Page<WishResponseDto> myWishList = wishListService.getList(member.getMemberId(), page, size);
         model.addAttribute("wishlist", myWishList);
         return "/yjshop/user/wishlist";
     }

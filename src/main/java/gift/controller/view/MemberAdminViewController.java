@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/view/admin")
 public class MemberAdminViewController {
+
     private final MemberService memberService;
 
     public MemberAdminViewController(MemberService memberService) {

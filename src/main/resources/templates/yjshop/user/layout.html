@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
 <head>
   <meta charset="UTF-8">
   <title>와이제이 쇼핑몰</title>
@@ -55,7 +56,7 @@
       max-width: 900px; /* 화면에 꽉 차지 않도록 */
       width: 100%;
       background-color: #fff;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
       border: 1px solid #ccc;
       font-family: sans-serif;
     }
@@ -90,7 +91,7 @@
   </div>
 </nav>
 
-  <th:block layout:fragment="content"></th:block>
+<th:block layout:fragment="content"></th:block>
 
 </body>
 </html>

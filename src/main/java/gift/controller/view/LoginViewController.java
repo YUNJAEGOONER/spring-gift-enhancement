@@ -43,8 +43,7 @@ public class LoginViewController {
     public String register(
             @ModelAttribute @Valid MemberRequestDto memberRequestDto,
             BindingResult bindingResult,
-            HttpServletResponse response,
-            HttpServletRequest request
+            HttpServletResponse response
     ){
         if(memberService.getMemberByEmail(memberRequestDto.email()).isPresent()){
             bindingResult.addError(new FieldError("memberRequestDto", "email", "이미 사용중인 이메일 입니다."));

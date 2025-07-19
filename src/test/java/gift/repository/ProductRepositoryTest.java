@@ -1,8 +1,6 @@
 package gift.repository;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import gift.entity.Product;
 import java.util.List;
@@ -10,6 +8,8 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @DataJpaTest
 class ProductRepositoryTest {
@@ -46,7 +46,8 @@ class ProductRepositoryTest {
         Product product2 = productRepository.save(new Product("Galaxy S25", 1250000, "galaxyisthebest"));
         assertThat(product1.getId()).isNotNull();
         assertThat(product2.getId()).isNotNull();
-        List<Product> productList = productRepository.findProductByNameContaining("Galaxy");
+        Pageable pageable = PageRequest.of(0, 5);
+        List<Product> productList = productRepository.findProductByNameContaining("Galaxy", pageable).getContent();
         assertThat(productList.size()).isEqualTo(2);
     }
 

@@ -12,9 +12,10 @@ import gift.exception.wish.WishNotFoundException;
 import gift.repository.MemberRepository;
 import gift.repository.ProductRepository;
 import gift.repository.WishListRepository;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +39,9 @@ public class WishListService {
         Optional<WishList> wishListOptional = wishListRepository.findWishListByMemberIdAndProductId(memberId, requestDto.productId());
         if (wishListOptional.isPresent()) {
             //이미 장바구니에 해당 상품이 있는 경우에는 수량만 업데이트
-            return changeQuantity(wishListOptional.get().getId(), requestDto.quantity());
+            WishList wishList = wishListOptional.get();
+            wishList.updateQuantity(requestDto.quantity());
+            return toWishResponseDto(wishList, product);
         }
         WishList wishList = wishListRepository.save(new WishList(member, product, requestDto.quantity()));
         return toWishResponseDto(wishList, product);
@@ -49,13 +52,18 @@ public class WishListService {
         return new WishResponseDto(wishList.getId(), product.getName(), product.getImageUrl(), wishList.getQuantity(), totalPrice);
     }
 
-    public List<WishResponseDto> getList(Long memberId){
-        List<WishList> wishListList = wishListRepository.findWishListByMemberId(memberId);
-        List<WishResponseDto> responseDtoList = new ArrayList<>();
-        for(WishList wishList : wishListList){
-            responseDtoList.add(toWishResponseDto(wishList, wishList.getProduct()));
-        }
-        return responseDtoList;
+    @Transactional(readOnly = true)
+    public Page<WishResponseDto> getList(Long memberId, int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<WishList> wishListList = wishListRepository.findWishListByMemberId(pageable, memberId);
+        return wishListList.map(
+                wishList -> new WishResponseDto(
+                        wishList.getId(),
+                        wishList.getProduct().getName(),
+                        wishList.getProduct().getImageUrl(),
+                        wishList.getQuantity(),
+                        wishList.getQuantity() * wishList.getProduct().getPrice())
+        );
     }
 
     public void removeFromWishList(Long wishListId){
@@ -69,7 +77,6 @@ public class WishListService {
             removeFromWishList(wishListId);
             return toWishResponseDto(wishList, wishList.getProduct());
         }
-        wishListRepository.save(wishList);
         return toWishResponseDto(wishList, wishList.getProduct());
     }
 

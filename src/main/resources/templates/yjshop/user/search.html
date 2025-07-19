@@ -1,6 +1,7 @@
 <html layout:decorate="~{yjshop/user/layout}">
 <div layout:fragment="content">
   <table>
+
     <style>
       td form {
         display: inline-flex;
@@ -47,14 +48,12 @@
           <img th:src="@{${product.imageUrl}}" width="100px" alt="상품 이미지"/>
         </a>
       </td>
-
       <td>
         <form th:action="@{/view/my/payment}" method="get">
           <input type="number" name="quantity" placeholder="수량">
           <input type="hidden" name="productId" th:value="${product.id}">
           <button type="submit">상품 구매</button>
         </form>
-
         <form th:action="@{/view/my/wishlist}" method="post">
           <input type="hidden" name="productId" th:value="${product.id}">
           <input type="number" name="quantity" placeholder="수량">
@@ -65,39 +64,36 @@
     </tbody>
   </table>
 
+
   <div th:if="${!productList.empty}">
     <ul class="pagination justify-content-center">
+
       <!-- 이전 버튼 -->
-      <li class="page-item" th:classappend="${!productList.hasPrevious()} ? 'disabled'">
+      <li class="page-item" th:classappend="${!productList.hasPrevious()} ? ' disabled'">
         <a class="page-link"
-           th:if="${productList.hasPrevious()}"
-           th:href="@{|?page=${productList.number - 1}|}">
-          <span>이전</span>
-        </a>
-        <a class="page-link" th:unless="${productList.hasPrevious()}">
+           th:href="@{|/view/products/search?name=${searchkeyword}&page=${productList.number - 1}&size=${productList.size}|}">
           <span>이전</span>
         </a>
       </li>
-      <!-- 페이지 번호들 -->
+
+      <!-- 페이지 번호 -->
       <li th:each="page : ${#numbers.sequence(0, productList.totalPages - 1)}"
           th:if="${page >= productList.number - 5 and page <= productList.number + 5}"
           th:classappend="${page == productList.number} ? ' active'"
           class="page-item">
         <a class="page-link"
            th:text="${page + 1}"
-           th:href="@{|?page=${page}|}"></a>
+           th:href="@{|/view/products/search?name=${searchkeyword}&page=${page}&size=${productList.size}|}"></a>
       </li>
+
       <!-- 다음 버튼 -->
-      <li class="page-item" th:classappend="${!productList.hasNext()} ? 'disabled'">
+      <li class="page-item" th:classappend="${!productList.hasNext()} ? ' disabled'">
         <a class="page-link"
-           th:if="${productList.hasNext()}"
-           th:href="@{|?page=${productList.number + 1}|}">
-          <span>다음</span>
-        </a>
-        <a class="page-link" th:unless="${productList.hasNext()}">
+           th:href="@{|/view/products/search?name=${searchkeyword}&page=${productList.number + 1}&size=${productList.size}|}">
           <span>다음</span>
         </a>
       </li>
+
     </ul>
   </div>
 

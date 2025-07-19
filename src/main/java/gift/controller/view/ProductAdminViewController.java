@@ -2,10 +2,12 @@ package gift.controller.view;
 
 import gift.dto.ProductRequestDto;
 import gift.entity.Product;
+import gift.exception.ErrorCode;
+import gift.exception.page.PageIndexException;
 import gift.exception.product.ProductNotFoundException;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
-import java.util.List;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,8 +31,15 @@ public class ProductAdminViewController {
 
     //전체 상품 가져오기
     @GetMapping("/products")
-    public String adminProductList(Model model){
-        List<Product> productList = productService.findAll();
+    public String adminProductList(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            Model model
+    ){
+        if(page < 0 || size < 0){
+            throw new PageIndexException(ErrorCode.PAGE_INDEX_ERROR);
+        }
+        Page<Product> productList = productService.findAll(page, size);
         model.addAttribute("productList", productList);
         return "/yjshop/admin/product/home";
     }
@@ -115,6 +124,12 @@ public class ProductAdminViewController {
     public String productNotFound(ProductNotFoundException e, Model model) {
         model.addAttribute("errorMsg", e.getErrorCode().getMessage());
         return "/yjshop/admin/product/productnotfound";
+    }
+
+    @ExceptionHandler(PageIndexException.class)
+    public String pageIndexError(PageIndexException e, Model model) {
+        model.addAttribute("errorMsg", e.getErrorCode().getMessage());
+        return "redirect:/view/admin/products";
     }
 
 }
