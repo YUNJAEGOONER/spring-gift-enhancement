@@ -1,8 +1,9 @@
 package gift.product.service;
 
-import gift.product.dto.ProductRequestDto;
+import gift.product.dto.ProductOptionRequestDto;
 import gift.product.Product;
 import gift.exception.ErrorCode;
+import gift.product.dto.ProductRequestDto;
 import gift.product.exception.ProductNotFoundException;
 import gift.product.repository.ProductRepository;
 import org.springframework.data.domain.Page;
@@ -22,9 +23,9 @@ public class ProductService {
     }
 
     //상품 추가
-    public Long add(ProductRequestDto requestDto){
+    public Product add(ProductOptionRequestDto requestDto){
         Product product = new Product(requestDto.getName(), requestDto.getPrice(), requestDto.getImageUrl());
-        return productRepository.save(product).getId();
+        return productRepository.save(product);
     }
 
     //상품 검색(id로)

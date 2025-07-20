@@ -1,17 +1,21 @@
 package gift.product.controller.api;
 
-import gift.product.dto.ProductRequestDto;
+import gift.option.dto.OptionRequestDto;
+import gift.option.service.OptionService;
+import gift.product.dto.ProductOptionRequestDto;
 import gift.product.Product;
 import gift.exception.ErrorCode;
 import gift.exception.MyException;
 import gift.exception.page.PageIndexException;
+import gift.product.dto.ProductRequestDto;
 import gift.product.service.ProductService;
 import jakarta.validation.Valid;
-import java.net.URI;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,18 +34,23 @@ public class ProductController {
 
     private final ProductService productService;
 
+    @Autowired private OptionService optionService;
+
     public ProductController(ProductService productService){
         this.productService = productService;
     }
 
     //create
-    //생성한 product는 HashMap에 저장
+    @Transactional //상품은 추가되는데 옵션을 추가하는 과정에서 오류가 발생할 수 있음
     @PostMapping("/products")
-    public ResponseEntity<Void> createProduct(
-            @RequestBody @Valid ProductRequestDto requestDto
+    public ResponseEntity<Product> createProduct(
+            @RequestBody @Valid ProductOptionRequestDto requestDto
     ) {
-        Long id = productService.add(requestDto);
-        return ResponseEntity.created(URI.create("api/products/" + id)).build();
+        Product product = productService.add(requestDto);
+        for(OptionRequestDto option : requestDto.getOptions()){
+            optionService.createOptionByProduct(product, option);
+        }
+        return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 
     //read

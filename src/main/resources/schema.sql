@@ -25,7 +25,6 @@ create table option
     price     int          not null,
     product_id bigint,
     primary key (id),
-    unique (name),
     foreign key (product_id) references product (id)
 );
 

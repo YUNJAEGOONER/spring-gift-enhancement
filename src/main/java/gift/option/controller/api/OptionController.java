@@ -27,7 +27,7 @@ public class OptionController {
             @PathVariable Long productId,
             @RequestBody OptionRequestDto optionRequestDto
     ){
-        OptionResponseDto responseDto = optionService.createOption(productId, optionRequestDto);
+        OptionResponseDto responseDto = optionService.createOptionByProductId(productId, optionRequestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 

@@ -3,8 +3,11 @@ package gift.product.controller.api;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import gift.option.dto.OptionRequestDto;
 import gift.product.Product;
+import gift.product.dto.ProductOptionRequestDto;
 import gift.product.dto.ProductRequestDto;
+import java.util.ArrayList;
 import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -28,10 +31,16 @@ public class ProductControllerTest {
     void 상품_추가(){
         var url = "http://localhost:" + port + "/api/products";
 
-        ProductRequestDto requestDto = new ProductRequestDto();
+        ProductOptionRequestDto requestDto = new ProductOptionRequestDto();
         requestDto.setName("애플비전");
         requestDto.setPrice(5550000);
         requestDto.setImageUrl("https://www.apple.com/newsroom/images/media/introducing-apple-vision-pro/Apple-WWDC23-Vision-Pro-glass-230605_big.jpg.large.jpg");
+
+        List<OptionRequestDto> options = new ArrayList<>();
+        options.add(new OptionRequestDto("38inc", 999, 0));
+        options.add(new OptionRequestDto("44inc", 100, 150000));
+
+        requestDto.setOptions(options);
 
         var response = restClient.post()
                 .uri(url)
@@ -46,7 +55,7 @@ public class ProductControllerTest {
 
         var url = "http://localhost:" + port + "/api/products";
 
-        ProductRequestDto requestDto = new ProductRequestDto();
+        ProductOptionRequestDto requestDto = new ProductOptionRequestDto();
         requestDto.setName("카카오프렌즈");
         requestDto.setPrice(15000);
         requestDto.setImageUrl("https://i.namu.wiki/i/GQMqb8jtiqpCo6_US7jmWDO30KfPB2MMvbdURVub61Rs6ALKqbG-nUATj-wNk7bXXWIDjiLHJxWYkTELUgybkA.webp");
@@ -64,10 +73,15 @@ public class ProductControllerTest {
     void 상품명_허용되는_특수문자(){
         var url = "http://localhost:" + port + "/api/products";
 
-        ProductRequestDto requestDto = new ProductRequestDto();
+        ProductOptionRequestDto requestDto = new ProductOptionRequestDto();
         requestDto.setName("[애플워치울트라]");
         requestDto.setPrice(340000);
         requestDto.setImageUrl("https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRzZTIOEqeEMHNP4zFNRWCB_BuBv22q881TH1fY3GShPKuJqNBxh8HIELZcTjj7FhvSqpwSleJj");
+
+        List<OptionRequestDto> options = new ArrayList<>();
+        options.add(new OptionRequestDto("44mm", 999, 0));
+        options.add(new OptionRequestDto("46mm", 100, 150000));
+        requestDto.setOptions(options);
 
         ResponseEntity<Product> response = restClient.post()
                 .uri(url)
@@ -82,7 +96,7 @@ public class ProductControllerTest {
     void 허용_되지않는_특수문자(){
         var url = "http://localhost:" + port + "/api/products";
 
-        ProductRequestDto requestDto = new ProductRequestDto();
+        ProductOptionRequestDto requestDto = new ProductOptionRequestDto();
         requestDto.setName("$애플워치울트라$");
         requestDto.setPrice(340000);
         requestDto.setImageUrl("https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRzZTIOEqeEMHNP4zFNRWCB_BuBv22q881TH1fY3GShPKuJqNBxh8HIELZcTjj7FhvSqpwSleJj");
@@ -138,6 +152,7 @@ public class ProductControllerTest {
         requestDto.setName("아이폰15");
         requestDto.setPrice(550000);
         requestDto.setImageUrl("https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRoaNDLkmOrSKI4HJ80_6OrpwF7UAyAme0pw_IO2W4G0JqiQOaHohKg4x48ulWc1py_2VfEVKUw");
+
         var response = restClient.put()
                 .uri(url)
                 .body(requestDto)

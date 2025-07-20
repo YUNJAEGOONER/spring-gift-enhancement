@@ -8,8 +8,6 @@ import jakarta.validation.constraints.Size;
 
 public class ProductRequestDto {
 
-    // private Long id; auto_increment
-
     @NotBlank(message = "상품명은 필수로 입력해야 합니다.")
     @Size(max = 15, message = "상품명은 15글자 이하여야 합니다.")
     @Pattern(regexp = "^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9()\\[\\]\\+\\-\\&/_]+$", message = "특수문자는 ( ), [ ], +, -, &, /, _ 만 입력이 가능합니다.")
@@ -37,7 +35,6 @@ public class ProductRequestDto {
         this.imageUrl = imageUrl;
     }
 
-
     //getter
     public String getName() {
         return name;
@@ -50,5 +47,4 @@ public class ProductRequestDto {
     public String getImageUrl() {
         return imageUrl;
     }
-
 }

@@ -7,16 +7,16 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public record OptionRequestDto(
-        @NotBlank
+        @NotBlank(message = "옵션명을 입력해주세요")
         @Pattern(regexp = "^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9()\\[\\]\\+\\-\\&/_ ]+$", message = "특수문자는 ( ), [ ], +, -, &, /, _ 만 입력이 가능합니다.")
         String name,
 
-        @NotNull
+        @NotNull(message = "해당 옵션의 수량을 입력해주세요")
         @Min(value = 1, message = "옵션 수량은 최소 1개 이상이어야 합니다.")
         @Max(value = 100_000_000, message = "옵션 수량은 1억 개 미만이어야 합니다.")
         Integer quantity,
 
-        @NotNull
+        @NotNull(message = "옵션 가격을 입력해주세요")
         Integer price
 ){
 

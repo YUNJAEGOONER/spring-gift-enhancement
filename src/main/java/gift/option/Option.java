@@ -1,4 +1,4 @@
-package gift.option.controller.view;
+package gift.option;
 
 import gift.product.Product;
 import jakarta.persistence.Column;
@@ -15,7 +15,6 @@ public class Option {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
-    @Column(unique = true)
     private String name;
 
     private Integer quantity;

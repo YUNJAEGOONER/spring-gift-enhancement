@@ -1,9 +1,10 @@
 package gift.product.controller.view;
 
 import gift.product.Product;
-import gift.product.dto.ProductRequestDto;
+import gift.product.dto.ProductOptionRequestDto;
 import gift.exception.ErrorCode;
 import gift.exception.page.PageIndexException;
+import gift.product.dto.ProductRequestDto;
 import gift.product.exception.ProductNotFoundException;
 import gift.product.service.ProductService;
 import jakarta.validation.Valid;
@@ -47,8 +48,8 @@ public class ProductAdminViewController {
     //상품 등록 화면을 가져오기
     @GetMapping("/products/add")
     public String productForm(Model model) {
-        model.addAttribute("productRequestDto", new ProductRequestDto());
-        model.addAttribute("requestDto", new ProductRequestDto());
+        model.addAttribute("productRequestDto", new ProductOptionRequestDto());
+        model.addAttribute("requestDto", new ProductOptionRequestDto());
         return "/yjshop/admin/product/form";
     }
 
@@ -77,7 +78,7 @@ public class ProductAdminViewController {
     //상품 등록
     @PostMapping("/products/add")
     public String createProduct(
-            @ModelAttribute @Valid ProductRequestDto requestDto,
+            @ModelAttribute @Valid ProductOptionRequestDto requestDto,
             BindingResult bindingResult,
             Model model
     ) {
@@ -87,8 +88,8 @@ public class ProductAdminViewController {
             return "/yjshop/admin/product/form";
         }
 
-        Long id = productService.add(requestDto);
-        return "redirect:/view/admin/products/search?id=" + id;
+        Product product = productService.add(requestDto);
+        return "redirect:/view/admin/products/search?id=" + product.getId();
     }
 
     //수정 폼 불러오기
@@ -99,7 +100,7 @@ public class ProductAdminViewController {
     ) {
         Product product = productService.findOne(id);
         model.addAttribute("product", product);
-        model.addAttribute("productRequestDto", new ProductRequestDto());
+        model.addAttribute("productRequestDto", new ProductOptionRequestDto());
         return "/yjshop/admin/product/modifyform";
     }
 

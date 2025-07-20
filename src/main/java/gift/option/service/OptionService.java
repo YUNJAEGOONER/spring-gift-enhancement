@@ -3,7 +3,7 @@ package gift.option.service;
 import gift.product.Product;
 import gift.exception.ErrorCode;
 import gift.product.exception.ProductNotFoundException;
-import gift.option.controller.view.Option;
+import gift.option.Option;
 import gift.option.dto.OptionRequestDto;
 import gift.option.dto.OptionResponseDto;
 import gift.option.exception.OptionNotFound;
@@ -24,9 +24,25 @@ public class OptionService {
     @Autowired private OptionRepository optionRepository;
     @Autowired private ProductRepository productRepository;
 
-    public OptionResponseDto createOption(Long productId, OptionRequestDto requestDto){
+    public OptionResponseDto createOptionByProductId(Long productId, OptionRequestDto requestDto){
         Product product = productRepository.findProductById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
+        if(product.getPrice() + requestDto.price() < 0){
+            throw new OptionPriceError(ErrorCode.UNAVAILABLE_OPTION_PRICE);
+        }
+
+        optionRepository.findOptionByProduct_IdAndName(product.getId(), requestDto.name())
+                .ifPresent(option -> {throw new UnavailableOptionName(ErrorCode.UNAVAILABLE_OPTION_NAME);});
+
+        Option option = optionRepository.save(new Option(requestDto.name(), requestDto.quantity(), requestDto.price(), product));
+        return new OptionResponseDto(
+                option.getId(),
+                option.getName(),
+                option.getQuantity(),
+                option.getPrice());
+    }
+
+    public OptionResponseDto createOptionByProduct(Product product, OptionRequestDto requestDto){
 
         if(product.getPrice() + requestDto.price() < 0){
             throw new OptionPriceError(ErrorCode.UNAVAILABLE_OPTION_PRICE);
