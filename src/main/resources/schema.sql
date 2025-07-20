@@ -35,6 +35,6 @@ create table wishlist
     option_id bigint not null,
     quantity   int    not null,
     primary key (id),
-    foreign key (option_id) references product (id),
+    foreign key (option_id) references product_option (id),
     foreign key (member_id) references member (id)
 );
