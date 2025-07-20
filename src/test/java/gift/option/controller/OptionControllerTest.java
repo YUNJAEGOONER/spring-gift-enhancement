@@ -22,7 +22,7 @@ class OptionControllerTest {
 
     @Test
     void 상품에_옵션을_추가하는_기능() {
-        var url = "http://localhost:" + port + "/api/options/add/1";
+        var url = "http://localhost:" + port + "/api/options/3";
         OptionRequestDto optionRequestDto = new OptionRequestDto("1TB", 999, 500000);
 
         var response = restClient.post()

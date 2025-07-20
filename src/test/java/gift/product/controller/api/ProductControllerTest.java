@@ -1,10 +1,10 @@
-package gift.controller.api;
+package gift.product.controller.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import gift.product.dto.ProductRequestDto;
 import gift.product.Product;
+import gift.product.dto.ProductRequestDto;
 import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

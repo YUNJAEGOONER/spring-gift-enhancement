@@ -1,12 +1,12 @@
-package gift.repository;
+package gift.wishlist.repository;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import gift.Wishlist.repository.WishListRepository;
 import gift.member.Member;
-import gift.product.Product;
 import gift.Wishlist.WishList;
 import gift.member.repository.MemberRepository;
+import gift.product.Product;
 import gift.product.repository.ProductRepository;
 import java.util.List;
 import java.util.Optional;
