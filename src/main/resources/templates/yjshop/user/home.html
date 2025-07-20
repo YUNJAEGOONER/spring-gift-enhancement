@@ -43,7 +43,7 @@
       <td th:text="${product.name}"></td>
       <td th:text="${product.price}"></td>
       <td>
-        <a th:href="@{/view/products/info(id=${product.id})}">
+        <a th:href="@{/view/products/{id}/options(id=${product.id})}">
           <img th:src="@{${product.imageUrl}}" width="100px" alt="상품 이미지"/>
         </a>
       </td>

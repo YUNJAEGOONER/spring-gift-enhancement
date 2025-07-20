@@ -1,7 +1,6 @@
 package gift.option;
 
 import gift.product.Product;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,7 +11,8 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class Option {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
     private String name;
@@ -25,23 +25,24 @@ public class Option {
     @JoinColumn(name = "product_id") //name_of_FK
     private Product product;
 
-    public void changeOption(String name, Integer quantity, Integer price){
+    public void changeOption(String name, Integer quantity, Integer price) {
         this.name = name;
         this.quantity = quantity;
         this.price = price;
     }
 
-    public void addStock(int amount){
+    public void addStock(int amount) {
         quantity += amount;
     }
 
-    public void removeStock(int amount){
+    public void removeStock(int amount) {
         quantity -= amount;
     }
 
-    protected Option(){}
+    protected Option() {
+    }
 
-    public Option(String name, Integer quantity, Integer price, Product product){
+    public Option(String name, Integer quantity, Integer price, Product product) {
         this.name = name;
         this.quantity = quantity;
         this.price = price;
