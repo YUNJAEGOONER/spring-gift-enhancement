@@ -73,6 +73,13 @@ public class OptionService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
+    public OptionResponseDto findOne(Long optionId){
+        Option option = optionRepository.findOptionById(optionId)
+                .orElseThrow(() -> new OptionNotFound(ErrorCode.OPTION_NOT_FOUND));
+        return new OptionResponseDto(option.getId(), option.getName(), option.getQuantity(), option.getPrice());
+    }
+
     public OptionResponseDto updateOption(Long optionId, OptionRequestDto requestDto){
         Option option = optionRepository.findOptionById(optionId).orElseThrow(
                 () -> new OptionNotFound(ErrorCode.OPTION_NOT_FOUND));

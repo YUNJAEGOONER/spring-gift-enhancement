@@ -31,9 +31,16 @@ public class OptionController {
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
-    @GetMapping("/options/{productId}")
-    public ResponseEntity<List<OptionResponseDto>> getOptions(@PathVariable Long productId){
+    //상품아이디를 통해 특정 상품의 옵션을 모두 조회
+    @GetMapping("/products/{productId}/options")
+    public ResponseEntity<List<OptionResponseDto>> getAllProductOptions(@PathVariable Long productId){
         return ResponseEntity.ok(optionService.getOptionByProduct(productId));
+    }
+
+    //optionId를 통해 특정 옵션을 조회
+    @GetMapping("/options/{optionId}")
+    public ResponseEntity<OptionResponseDto> getOption(@PathVariable Long optionId){
+        return ResponseEntity.ok(optionService.findOne(optionId));
     }
 
     @PutMapping("/options/{optionId}")
