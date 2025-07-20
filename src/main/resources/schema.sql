@@ -22,10 +22,11 @@ create table option
     id         bigint auto_increment,
     name       varchar(255) not null,
     quantity   int          not null,
+    price     int          not null,
     product_id bigint,
     primary key (id),
     unique (name),
-    foreign key (product_id) references product(id)
+    foreign key (product_id) references product (id)
 );
 
 create table wishlist

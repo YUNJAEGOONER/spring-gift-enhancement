@@ -14,7 +14,11 @@ public record OptionRequestDto(
         @NotNull
         @Min(value = 1, message = "옵션 수량은 최소 1개 이상이어야 합니다.")
         @Max(value = 100_000_000, message = "옵션 수량은 1억 개 미만이어야 합니다.")
-        Integer quantity
+        Integer quantity,
+
+        @NotNull
+        Integer price
+
 ){
 
 }

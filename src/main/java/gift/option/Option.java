@@ -10,7 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class entity {
+public class Option {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
@@ -19,6 +19,8 @@ public class entity {
     private String name;
 
     private Integer quantity;
+
+    private Integer price;
 
     @ManyToOne
     @JoinColumn(name = "product_id") //name_of_FK
@@ -32,4 +34,30 @@ public class entity {
         quantity -= amount;
     }
 
+    public Option(String name, Integer quantity, Integer price, Product product){
+        this.name = name;
+        this.quantity = quantity;
+        this.price = price;
+        this.product = product;
+    }
+
+    public Long getId() {
+        return Id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
 }
