@@ -7,6 +7,9 @@ import gift.exception.product.ProductNotFoundException;
 import gift.option.Option;
 import gift.option.dto.OptionRequestDto;
 import gift.option.dto.OptionResponseDto;
+import gift.option.exception.OptionNotFound;
+import gift.option.exception.OptionPriceError;
+import gift.option.exception.UnavailableOptionName;
 import gift.option.repository.OptionRepository;
 import gift.repository.ProductRepository;
 import java.util.List;
@@ -16,23 +19,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class OptionService {
 
     @Autowired private OptionRepository optionRepository;
     @Autowired private ProductRepository productRepository;
 
-    @Transactional
     public OptionResponseDto createOption(Long productId, OptionRequestDto requestDto){
         Product product = productRepository.findProductById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
 
         if(product.getPrice() + requestDto.price() < 0){
-            throw new IllegalStateException("옵션 가격 문제 발생");
+            throw new OptionPriceError(ErrorCode.UNAVAILABLE_OPTION_PRICE);
         }
 
         optionRepository.findOptionByProduct_IdAndName(product.getId(), requestDto.name())
-                .ifPresent(option -> {throw new IllegalStateException("이미 등록되어 있는 옵션입니다.");});
+                .ifPresent(option -> {throw new UnavailableOptionName(ErrorCode.UNAVAILABLE_OPTION_NAME);});
 
         Option option = optionRepository.save(new Option(requestDto.name(), requestDto.quantity(), requestDto.price(), product));
         return new OptionResponseDto(
@@ -42,7 +44,7 @@ public class OptionService {
                 option.getPrice());
     }
 
-
+    @Transactional(readOnly = true)
     public List<OptionResponseDto> getOptionByProduct(Long productId){
         Product product = productRepository.findProductById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
@@ -56,17 +58,24 @@ public class OptionService {
                 .toList();
     }
 
-    @Transactional
     public OptionResponseDto updateOption(Long optionId, OptionRequestDto requestDto){
         Option option = optionRepository.findOptionById(optionId).orElseThrow(
-                () -> new IllegalStateException("존재하지 않는 옵션입니다."));
+                () -> new OptionNotFound(ErrorCode.OPTION_NOT_FOUND));
         Optional<Option> optionOptional = optionRepository.findOptionByProduct_IdAndName(option.getProduct().getId(), requestDto.name());
         //해당 옵션명을 사용하고 있지 않거나, 해당 옵션명이 자신의 옵션명인 경우 (수량에만 변화가 생기는 경우)
         if(optionOptional.isEmpty()||optionOptional.get().getId().equals(optionId)){
             option.changeOption(requestDto.name(), requestDto.price(), requestDto.quantity());
             return new OptionResponseDto(option.getId(), option.getName(), option.getQuantity(), option.getPrice());
         }
-        throw new IllegalStateException("이미 사용중인 옵션명 입니다.");
+        throw new UnavailableOptionName(ErrorCode.UNAVAILABLE_OPTION_NAME);
     }
+
+    @Transactional
+    public void removeOtion(Long optionId){
+        Option option = optionRepository.findOptionById(optionId).orElseThrow(
+                () -> new OptionNotFound(ErrorCode.OPTION_NOT_FOUND));
+        optionRepository.removeOptionById(optionId);
+    }
+
 
 }
