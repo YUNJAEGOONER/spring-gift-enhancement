@@ -90,7 +90,7 @@
         <form th:action="@{/view/admin/products/remove/{id}(id=${product.id})}" method="post">
           <button type="submit">상품 삭제</button>
         </form>
-        <button th:onclick="|location.href='@{/view/admin/products/modify/{id}(id=${product.id})}'|">상품 수정</button>
+        <button th:onclick="|location.href='@{/view/admin/products/modify/options/{id}(id=${product.id})}'|">상품 수정</button>
       </td>
 
 

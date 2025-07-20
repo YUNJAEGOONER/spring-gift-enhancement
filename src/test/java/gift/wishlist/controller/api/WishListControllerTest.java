@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import gift.jwt.JwtResponseDto;
 import gift.member.dto.MemberRequestDto;
-import gift.Wishlist.dto.WishRequestDto;
-import gift.Wishlist.dto.WishResponseDto;
+import gift.wishlist.dto.WishRequestDto;
+import gift.wishlist.dto.WishResponseDto;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,7 +31,7 @@ class WishListControllerTest {
 
         var url = "http://localhost:" + port + "/api/wishlist/add";
 
-        WishRequestDto wishRequestDto = new WishRequestDto(2L, 50);
+        WishRequestDto wishRequestDto = new WishRequestDto(1L, 50);
 
         var response = restClient.post()
                 .uri(url)
@@ -40,7 +40,6 @@ class WishListControllerTest {
                 .retrieve()
                 .toEntity(WishResponseDto.class);
 
-        System.out.println(response.toString());
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
 
@@ -179,4 +178,5 @@ class WishListControllerTest {
                 .toEntity(WishResponseDto.class);
         return response.getBody().wishListId();
     }
+
 }

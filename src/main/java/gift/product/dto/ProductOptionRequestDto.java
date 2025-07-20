@@ -1,6 +1,6 @@
 package gift.product.dto;
 
-import gift.option.dto.OptionRequestDto;
+import gift.productoption.dto.OptionRequestDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.ArrayList;

@@ -3,7 +3,7 @@ package gift.product.controller.api;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import gift.option.dto.OptionRequestDto;
+import gift.productoption.dto.OptionRequestDto;
 import gift.product.Product;
 import gift.product.dto.ProductOptionRequestDto;
 import gift.product.dto.ProductRequestDto;
@@ -164,7 +164,7 @@ public class ProductControllerTest {
 
     @Test
     void 상품을_삭제하는_기능(){
-        var url = "http://localhost:" + port + "/api/products/1";
+        var url = "http://localhost:" + port + "/api/products/2";
         var response = restClient.delete()
                 .uri(url)
                 .retrieve()
