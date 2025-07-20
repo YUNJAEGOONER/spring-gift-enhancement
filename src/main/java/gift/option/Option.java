@@ -34,6 +34,8 @@ public class Option {
         quantity -= amount;
     }
 
+    protected Option(){}
+
     public Option(String name, Integer quantity, Integer price, Product product){
         this.name = name;
         this.quantity = quantity;

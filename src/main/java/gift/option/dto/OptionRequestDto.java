@@ -18,7 +18,6 @@ public record OptionRequestDto(
 
         @NotNull
         Integer price
-
 ){
 
 }

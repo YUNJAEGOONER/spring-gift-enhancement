@@ -3,9 +3,11 @@ package gift.option.controller;
 import gift.option.dto.OptionRequestDto;
 import gift.option.dto.OptionResponseDto;
 import gift.option.service.OptionService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +27,11 @@ public class OptionController {
     ){
         OptionResponseDto responseDto = optionService.createOption(productId, optionRequestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{productId}")
+    public ResponseEntity<List<OptionResponseDto>> getOptions(@PathVariable Long productId){
+        return ResponseEntity.ok(optionService.getOptionByProduct(productId));
     }
 
 
