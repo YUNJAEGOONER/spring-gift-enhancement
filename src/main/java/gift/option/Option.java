@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.criteria.CriteriaBuilder.In;
 
 @Entity
 public class Option {
@@ -25,6 +26,12 @@ public class Option {
     @ManyToOne
     @JoinColumn(name = "product_id") //name_of_FK
     private Product product;
+
+    public void changeOption(String name, Integer quantity, Integer price){
+        this.name = name;
+        this.quantity = quantity;
+        this.price = price;
+    }
 
     public void addStock(int amount){
         quantity += amount;
