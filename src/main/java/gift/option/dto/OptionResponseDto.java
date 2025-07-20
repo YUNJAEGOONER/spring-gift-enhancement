@@ -1,4 +1,4 @@
-package gift.productoption.dto;
+package gift.option.dto;
 
 public record OptionResponseDto(
         Long id,

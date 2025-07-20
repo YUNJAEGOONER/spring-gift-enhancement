@@ -1,10 +1,11 @@
 package gift.option.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import gift.productoption.dto.OptionRequestDto;
-import gift.productoption.dto.OptionResponseDto;
+import gift.option.dto.OptionRequestDto;
+import gift.option.dto.OptionResponseDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -12,7 +13,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.web.client.RestClient;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class ProductOptionControllerTest {
+class OptionControllerTest {
 
     @LocalServerPort
     private int port;

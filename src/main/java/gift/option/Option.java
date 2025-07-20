@@ -1,4 +1,4 @@
-package gift.productoption;
+package gift.option;
 
 import gift.product.Product;
 import jakarta.persistence.Entity;
@@ -9,7 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class ProductOption {
+public class Option {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,10 +39,10 @@ public class ProductOption {
         quantity -= amount;
     }
 
-    protected ProductOption() {
+    protected Option() {
     }
 
-    public ProductOption(String name, Integer quantity, Integer price, Product product) {
+    public Option(String name, Integer quantity, Integer price, Product product) {
         this.name = name;
         this.quantity = quantity;
         this.price = price;

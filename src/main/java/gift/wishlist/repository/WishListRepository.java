@@ -11,8 +11,8 @@ import org.springframework.data.repository.query.Param;
 public interface WishListRepository extends JpaRepository<WishList, Long> {
     Optional<WishList> findWishListById(Long id);
     void removeWishListById(Long id);
-    @Query("SELECT w FROM WishList w JOIN FETCH w.productOption WHERE w.member.id = :memberId")
+    @Query("SELECT w FROM WishList w JOIN FETCH w.option WHERE w.member.id = :memberId")
     Page<WishList> findWishListByMemberId(Pageable pageable, @Param("memberId") Long memberId);
-    Optional<WishList> findWishListByMemberIdAndProductOptionId(Long memberId, Long optionId);
+    Optional<WishList> findWishListByMemberIdAndOptionId(Long memberId, Long optionId);
 }
 

@@ -1,9 +1,9 @@
 package gift.infra.interceptor;
 
-import gift.member.Role;
 import gift.exception.ErrorCode;
-import gift.jwt.exception.JWTAuthException;
 import gift.jwt.JwtAuthService;
+import gift.jwt.exception.JWTAuthException;
+import gift.member.Role;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;

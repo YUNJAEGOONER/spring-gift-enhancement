@@ -1,9 +1,9 @@
 package gift.wishlist.controller.view;
 
+import gift.infra.LoggedInMember;
+import gift.member.Member;
 import gift.wishlist.dto.WishRequestDto;
 import gift.wishlist.dto.WishResponseDto;
-import gift.member.Member;
-import gift.infra.LoggedInMember;
 import gift.wishlist.service.WishListService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;

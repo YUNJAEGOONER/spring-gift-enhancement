@@ -1,8 +1,8 @@
 package gift.jwt;
 
-import gift.member.Role;
 import gift.exception.ErrorCode;
 import gift.jwt.exception.JWTAuthException;
+import gift.member.Role;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;

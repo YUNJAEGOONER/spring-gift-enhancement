@@ -1,13 +1,15 @@
-package gift.productoption.controller.api;
+package gift.option.controller.api;
 
-import gift.productoption.dto.OptionRequestDto;
-import gift.productoption.dto.OptionResponseDto;
-import gift.productoption.service.OptionService;
+import gift.exception.MyException;
+import gift.option.dto.OptionRequestDto;
+import gift.option.dto.OptionResponseDto;
+import gift.option.service.OptionService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,6 +57,11 @@ public class OptionController {
     public ResponseEntity<Void> removeOption(@PathVariable Long optionId){
         optionService.removeOtion(optionId);
         return ResponseEntity.noContent().build();
+    }
+
+    @ExceptionHandler(MyException.class)
+    public ResponseEntity<String> MemberControllerExceptionHandler(MyException e){
+        return ResponseEntity.status(e.getErrorCode().getStatusCode()).body(e.getErrorCode().getMessage());
     }
 
 }

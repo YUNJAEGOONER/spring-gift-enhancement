@@ -3,7 +3,7 @@ package gift.product.controller.api;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import gift.productoption.dto.OptionRequestDto;
+import gift.option.dto.OptionRequestDto;
 import gift.product.Product;
 import gift.product.dto.ProductOptionRequestDto;
 import gift.product.dto.ProductRequestDto;

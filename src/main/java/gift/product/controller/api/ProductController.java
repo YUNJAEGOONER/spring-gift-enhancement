@@ -1,12 +1,12 @@
 package gift.product.controller.api;
 
-import gift.productoption.dto.OptionRequestDto;
-import gift.productoption.service.OptionService;
-import gift.product.dto.ProductOptionRequestDto;
-import gift.product.Product;
 import gift.exception.ErrorCode;
 import gift.exception.MyException;
 import gift.exception.page.PageIndexException;
+import gift.option.dto.OptionRequestDto;
+import gift.option.service.OptionService;
+import gift.product.Product;
+import gift.product.dto.ProductOptionRequestDto;
 import gift.product.dto.ProductRequestDto;
 import gift.product.service.ProductService;
 import jakarta.validation.Valid;

@@ -1,14 +1,13 @@
 package gift.product.controller.view;
 
-import gift.product.Product;
-import gift.product.dto.ProductOptionRequestDto;
 import gift.exception.ErrorCode;
 import gift.exception.page.PageIndexException;
+import gift.product.Product;
+import gift.product.dto.ProductOptionRequestDto;
 import gift.product.dto.ProductRequestDto;
 import gift.product.exception.ProductNotFoundException;
 import gift.product.service.ProductService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

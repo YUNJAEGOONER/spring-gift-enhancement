@@ -2,10 +2,10 @@ package gift.member.service;
 
 import gift.exception.ErrorCode;
 import gift.jwt.exception.LoginError;
-import gift.member.exception.MemberNotFoundException;
-import gift.member.exception.UnavailableEmailException;
 import gift.member.Member;
 import gift.member.dto.MemberRequestDto;
+import gift.member.exception.MemberNotFoundException;
+import gift.member.exception.UnavailableEmailException;
 import gift.member.repository.MemberRepository;
 import java.util.List;
 import java.util.Optional;

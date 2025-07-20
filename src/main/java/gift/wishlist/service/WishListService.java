@@ -1,18 +1,18 @@
 package gift.wishlist.service;
 
+import gift.exception.ErrorCode;
+import gift.member.Member;
+import gift.member.exception.MemberNotFoundException;
+import gift.member.repository.MemberRepository;
+import gift.option.Option;
+import gift.option.repository.OptionRepository;
+import gift.product.Product;
+import gift.product.exception.ProductNotFoundException;
+import gift.wishlist.WishList;
 import gift.wishlist.dto.WishRequestDto;
 import gift.wishlist.dto.WishResponseDto;
-import gift.wishlist.repository.WishListRepository;
-import gift.member.Member;
-import gift.productoption.ProductOption;
-import gift.productoption.repository.OptionRepository;
-import gift.product.Product;
-import gift.wishlist.WishList;
-import gift.exception.ErrorCode;
-import gift.member.exception.MemberNotFoundException;
-import gift.product.exception.ProductNotFoundException;
 import gift.wishlist.exception.WishNotFoundException;
-import gift.member.repository.MemberRepository;
+import gift.wishlist.repository.WishListRepository;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,27 +35,27 @@ public class WishListService {
     }
 
     public WishResponseDto addToWishList(Long memberId, WishRequestDto requestDto) {
-        ProductOption productOption = optionRepository.findOptionById(requestDto.optionId()).orElseThrow(() -> new ProductNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
+        Option option = optionRepository.findOptionById(requestDto.optionId()).orElseThrow(() -> new ProductNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
         Member member = memberRepository.findMemberById(memberId).orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
-        Optional<WishList> wishListOptional = wishListRepository.findWishListByMemberIdAndProductOptionId(memberId, requestDto.optionId());
+        Optional<WishList> wishListOptional = wishListRepository.findWishListByMemberIdAndOptionId(memberId, requestDto.optionId());
         if (wishListOptional.isPresent()) {
             //이미 장바구니에 해당 상품이 있는 경우에는 수량만 업데이트
             WishList wishList = wishListOptional.get();
             wishList.updateQuantity(requestDto.quantity());
-            return toWishResponseDto(wishList, productOption);
+            return toWishResponseDto(wishList, option);
         }
-        WishList wishList = wishListRepository.save(new WishList(member, productOption, requestDto.quantity()));
-        return toWishResponseDto(wishList, productOption);
+        WishList wishList = wishListRepository.save(new WishList(member, option, requestDto.quantity()));
+        return toWishResponseDto(wishList, option);
     }
 
-    public WishResponseDto toWishResponseDto(WishList wishList, ProductOption productOption){
-        Product product = productOption.getProduct();
-        Integer totalPrice = wishList.getQuantity() * (productOption.getPrice() + product.getPrice());
+    public WishResponseDto toWishResponseDto(WishList wishList, Option option){
+        Product product = option.getProduct();
+        Integer totalPrice = wishList.getQuantity() * (option.getPrice() + product.getPrice());
         return new WishResponseDto(
                 wishList.getId(),
-                productOption.getId(),
+                option.getId(),
                 product.getName(),
-                productOption.getName(),
+                option.getName(),
                 product.getImageUrl(),
                 wishList.getQuantity(),
                 totalPrice

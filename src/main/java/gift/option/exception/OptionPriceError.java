@@ -1,4 +1,4 @@
-package gift.productoption.exception;
+package gift.option.exception;
 
 import gift.exception.ErrorCode;
 import gift.exception.MyException;

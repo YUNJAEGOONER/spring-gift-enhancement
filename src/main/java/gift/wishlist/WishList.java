@@ -1,7 +1,7 @@
 package gift.wishlist;
 
 import gift.member.Member;
-import gift.productoption.ProductOption;
+import gift.option.Option;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -25,14 +25,14 @@ public class WishList {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "option_Id")
-    private ProductOption productOption;
+    private Option option;
 
     @Column(nullable = false)
     private Integer quantity;
 
-    public WishList(Member member, ProductOption productOption, Integer quantity){
+    public WishList(Member member, Option option, Integer quantity){
         this.member = member;
-        this.productOption = productOption;
+        this.option = option;
         this.quantity = quantity;
     }
 
@@ -50,8 +50,8 @@ public class WishList {
         return member;
     }
 
-    public ProductOption getOption() {
-        return productOption;
+    public Option getOption() {
+        return option;
     }
 
     public Integer getQuantity(){

@@ -22,7 +22,7 @@ values('USER','testuser2@apple.com', '12345678');
 insert into product(id, name, price, image_url)
 values(9999L, '아이폰16Pro', 1550000, 'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQtIiGp7I3QmpgBrbgqKJP4TMmjCAQQ5PKZADLBuzDere8Z9iWFUzfv-jvW0F7qP9gLewthFhuVUA');
 
-insert into product_option(name, quantity, price, product_id)
+insert into option(name, quantity, price, product_id)
 values ('128GB', 999, 100000, 9999L),
        ('256GB', 999, 200000, 9999L),
        ('512GB', 999, 300000, 9999L),
