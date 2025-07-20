@@ -1,8 +1,8 @@
 package gift.infra;
 
-import gift.entity.Member;
-import gift.service.JwtAuthService;
-import gift.service.MemberService;
+import gift.member.Member;
+import gift.jwt.JwtAuthService;
+import gift.member.service.MemberService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;

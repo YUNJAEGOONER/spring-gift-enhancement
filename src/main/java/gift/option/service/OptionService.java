@@ -1,17 +1,16 @@
 package gift.option.service;
 
-import gift.entity.Product;
+import gift.product.Product;
 import gift.exception.ErrorCode;
-import gift.exception.MyException;
-import gift.exception.product.ProductNotFoundException;
-import gift.option.Option;
+import gift.product.exception.ProductNotFoundException;
+import gift.option.controller.view.Option;
 import gift.option.dto.OptionRequestDto;
 import gift.option.dto.OptionResponseDto;
 import gift.option.exception.OptionNotFound;
 import gift.option.exception.OptionPriceError;
 import gift.option.exception.UnavailableOptionName;
 import gift.option.repository.OptionRepository;
-import gift.repository.ProductRepository;
+import gift.product.repository.ProductRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;

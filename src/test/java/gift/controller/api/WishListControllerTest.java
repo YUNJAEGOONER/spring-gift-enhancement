@@ -2,10 +2,10 @@ package gift.controller.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import gift.dto.JwtResponseDto;
-import gift.dto.MemberRequestDto;
-import gift.dto.wish.WishRequestDto;
-import gift.dto.wish.WishResponseDto;
+import gift.jwt.JwtResponseDto;
+import gift.member.dto.MemberRequestDto;
+import gift.Wishlist.dto.WishRequestDto;
+import gift.Wishlist.dto.WishResponseDto;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

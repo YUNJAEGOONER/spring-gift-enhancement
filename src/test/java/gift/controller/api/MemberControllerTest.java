@@ -2,7 +2,7 @@ package gift.controller.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import gift.dto.MemberRequestDto;
+import gift.member.dto.MemberRequestDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

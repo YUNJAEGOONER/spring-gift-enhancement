@@ -1,7 +1,6 @@
 package gift.option.repository;
 
-import gift.option.Option;
-import gift.option.dto.OptionResponseDto;
+import gift.option.controller.view.Option;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

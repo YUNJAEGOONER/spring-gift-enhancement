@@ -1,11 +1,11 @@
 package gift.infra.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gift.entity.Member;
+import gift.member.Member;
 import gift.exception.ErrorCode;
-import gift.exception.member.LoginError;
-import gift.service.JwtAuthService;
-import gift.service.MemberService;
+import gift.jwt.exception.LoginError;
+import gift.jwt.JwtAuthService;
+import gift.member.service.MemberService;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;

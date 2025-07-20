@@ -3,8 +3,8 @@ package gift.controller.api;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import gift.dto.ProductRequestDto;
-import gift.entity.Product;
+import gift.product.dto.ProductRequestDto;
+import gift.product.Product;
 import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

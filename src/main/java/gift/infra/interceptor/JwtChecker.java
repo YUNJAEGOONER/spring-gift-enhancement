@@ -1,12 +1,11 @@
 package gift.infra.interceptor;
 
 import gift.exception.ErrorCode;
-import gift.exception.member.LoginError;
-import gift.service.JwtAuthService;
+import gift.jwt.exception.LoginError;
+import gift.jwt.JwtAuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
-import org.slf4j.LoggerFactory;
 
 @FunctionalInterface
 public interface JwtChecker {
