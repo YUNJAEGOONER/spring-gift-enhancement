@@ -1,10 +1,16 @@
 package gift.product.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import gift.option.entity.Option;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Product {
@@ -20,6 +26,10 @@ public class Product {
 
     @Column(nullable = false)
     private String imageUrl;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<Option> options = new ArrayList<>();
 
     public Product(String name, Integer price, String imageUrl) {
         this.name = name;
@@ -49,6 +59,18 @@ public class Product {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public List<Option> getOptions() {
+        return options;
+    }
+
+    //연관관계 편의 메서드
+    public void addOption(Option option){
+        if(!options.contains(option)){
+            options.add(option);
+        }
+        option.setProduct(this);
     }
 
 }

@@ -1,9 +1,11 @@
 package gift.product.service;
 
 import gift.exception.ErrorCode;
-import gift.product.entity.Product;
 import gift.product.dto.ProductOptionRequestDto;
+import gift.product.dto.ProductOptionResponseDto;
 import gift.product.dto.ProductRequestDto;
+import gift.product.dto.ProductResponseDto;
+import gift.product.entity.Product;
 import gift.product.exception.ProductNotFoundException;
 import gift.product.repository.ProductRepository;
 import org.springframework.data.domain.Page;
@@ -30,28 +32,35 @@ public class ProductService {
 
     //상품 검색(id로)
     @Transactional(readOnly = true)
-    public Product findOne(Long id){
+    public ProductResponseDto findOne(Long id){
         Product product = productRepository.findProductById(id).orElseThrow(()-> new ProductNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
-        return product;
+        return new ProductResponseDto(product);
+    }
+
+    //특정 상품 조회 시, 옵션까지 모두 조회되도록,,,
+    @Transactional(readOnly = true)
+    public ProductOptionResponseDto findProductOption(Long productId){
+        Product product = productRepository.findProductById(productId).orElseThrow(()-> new ProductNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
+        return new ProductOptionResponseDto(product, product.getOptions());
     }
 
     //상품 검색
     @Transactional(readOnly = true)
-    public Page<Product> searchProduct(String name, int page, int size){
+    public Page<ProductResponseDto> searchProduct(String name, int page, int size){
         Pageable pageable = PageRequest.of(page, size);
-        return productRepository.findProductByNameContaining(name, pageable);
+        return productRepository.findProductByNameContaining(name, pageable).map(product -> new ProductResponseDto(product));
     }
 
     //전체 상품 검색
     @Transactional(readOnly = true)
-    public Page<Product> findAll(int page, int size){
+    public Page<ProductResponseDto> findAll(int page, int size){
         Pageable pageable = PageRequest.of(page, size);
-        return productRepository.findAll(pageable);
+        return productRepository.findAll(pageable).map(product -> new ProductResponseDto(product));
     }
 
     //상품 수정
     public void modify(Long id, ProductRequestDto requestDto){
-        Product product = findOne(id);
+        Product product = productRepository.findProductById(id).orElseThrow(() -> new ProductNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
         product.changeProductInfo(requestDto.getName(), requestDto.getPrice(), requestDto.getImageUrl());
         productRepository.save(product);
     }

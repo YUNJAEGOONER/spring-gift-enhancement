@@ -1,73 +1,90 @@
 <html layout:decorate="~{yjshop/user/layout}">
 <div layout:fragment="content">
-  <table>
-    <style>
-      td form {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        margin: 5px;
-      }
+  <style>
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); /* 3열 구성 */
+      gap: 24px;
+      justify-content: center;
+      margin: 40px auto;
+      max-width: 90%;
+    }
 
-      td input[type="number"] {
-        width: 70px;
-        height: 32px;
-        padding: 4px;
-        font-size: 14px;
-        box-sizing: border-box;
-      }
+    .product-card {
+      display: flex;
+      align-items: center;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 14px;
+      background-color: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      height: 180px; /* 일정 높이 유지 */
+    }
 
-      td button,
-      td input[type="submit"] {
-        height: 32px;
-        padding: 0 10px;
-        font-size: 14px;
-        background-color: #90ee90;
-        border: 1px solid #ccc;
-        font-weight: bold;
-        cursor: pointer;
-        box-sizing: border-box;
-      }
-    </style>
+    .product-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
 
-    <thead>
-    <tr>
-      <th>상품명</th>
-      <th>가격</th>
-      <th>이미지</th>
-<!--      <th>구매하기 / 장바구니 담기</th>-->
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="product : ${productList}">
-      <td th:text="${product.name}"></td>
-      <td th:text="${product.price}"></td>
-      <td>
-        <a th:href="@{/view/products/{id}/options(id=${product.id})}">
-          <img th:src="@{${product.imageUrl}}" width="100px" alt="상품 이미지"/>
-        </a>
-      </td>
+    .product-image {
+      flex-shrink: 0;
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
+      border-radius: 10px;
+      background-color: #f5f5f5;
+      margin-right: 16px;
+    }
 
-<!--      <td>-->
-<!--        <form th:action="@{/view/my/payment}" method="get">-->
-<!--          <input type="number" name="quantity" placeholder="수량">-->
-<!--          <input type="hidden" name="productId" th:value="${product.id}">-->
-<!--          <button type="submit">상품 구매</button>-->
-<!--        </form>-->
+    .product-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
 
-<!--        <form th:action="@{/view/my/wishlist}" method="post">-->
-<!--          <input type="hidden" name="productId" th:value="${product.id}">-->
-<!--          <input type="number" name="quantity" placeholder="수량">-->
-<!--          <button type="submit">장바구니 담기</button>-->
-<!--        </form>-->
-<!--      </td>-->
-    </tr>
-    </tbody>
-  </table>
+    .product-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 6px;
+    }
+
+    .product-price {
+      font-size: 16px;
+      color: #333;
+    }
+
+    .pagination {
+      margin-top: 40px;
+    }
+
+    .page-item.active .page-link {
+      background-color: #90ee90;
+      color: #000;
+      border: 1px solid #90ee90;
+    }
+
+    body {
+      background-color: #fdfdfd;
+    }
+  </style>
+
+  <div class="product-grid">
+    <div class="product-card" th:each="product : ${productList}">
+      <a th:href="@{/view/products/info(id=${product.id})}">
+        <img class="product-image" th:src="@{${product.imageUrl}}" alt="상품 이미지"/>
+      </a>
+      <div class="product-info">
+        <div class="product-name" th:text="${product.name}">상품명</div>
+        <div class="product-price" th:text="|₩ ${product.price}|">₩10,000</div>
+      </div>
+    </div>
+  </div>
 
   <div th:if="${!productList.empty}">
     <ul class="pagination justify-content-center">
-      <!-- 이전 버튼 -->
       <li class="page-item" th:classappend="${!productList.hasPrevious()} ? 'disabled'">
         <a class="page-link"
            th:if="${productList.hasPrevious()}"
@@ -78,7 +95,7 @@
           <span>이전</span>
         </a>
       </li>
-      <!-- 페이지 번호들 -->
+
       <li th:each="page : ${#numbers.sequence(0, productList.totalPages - 1)}"
           th:if="${page >= productList.number - 5 and page <= productList.number + 5}"
           th:classappend="${page == productList.number} ? ' active'"
@@ -87,7 +104,7 @@
            th:text="${page + 1}"
            th:href="@{|?page=${page}|}"></a>
       </li>
-      <!-- 다음 버튼 -->
+
       <li class="page-item" th:classappend="${!productList.hasNext()} ? 'disabled'">
         <a class="page-link"
            th:if="${productList.hasNext()}"
@@ -100,6 +117,5 @@
       </li>
     </ul>
   </div>
-
 </div>
 </html>

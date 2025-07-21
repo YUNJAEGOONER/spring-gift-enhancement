@@ -1,12 +1,15 @@
 package gift.product.controller.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import gift.option.dto.OptionRequestDto;
-import gift.product.entity.Product;
 import gift.product.dto.ProductOptionRequestDto;
+import gift.product.dto.ProductOptionResponseDto;
 import gift.product.dto.ProductRequestDto;
+import gift.product.entity.Product;
 import java.util.ArrayList;
 import java.util.List;
 import org.assertj.core.api.Assertions;
@@ -16,7 +19,8 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpClientErrorException.BadRequest;
+import org.springframework.web.client.HttpClientErrorException.NotFound;
 import org.springframework.web.client.RestClient;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -60,7 +64,7 @@ public class ProductControllerTest {
         requestDto.setPrice(15000);
         requestDto.setImageUrl("https://i.namu.wiki/i/GQMqb8jtiqpCo6_US7jmWDO30KfPB2MMvbdURVub61Rs6ALKqbG-nUATj-wNk7bXXWIDjiLHJxWYkTELUgybkA.webp");
 
-        Assertions.assertThatExceptionOfType(HttpClientErrorException.BadRequest.class)
+        Assertions.assertThatExceptionOfType(BadRequest.class)
                 .isThrownBy(
                         ()-> restClient.post()
                                 .uri(url)
@@ -101,7 +105,7 @@ public class ProductControllerTest {
         requestDto.setPrice(340000);
         requestDto.setImageUrl("https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRzZTIOEqeEMHNP4zFNRWCB_BuBv22q881TH1fY3GShPKuJqNBxh8HIELZcTjj7FhvSqpwSleJj");
 
-        assertThrows(HttpClientErrorException.BadRequest.class,
+        assertThrows(BadRequest.class,
                 () -> restClient.post()
                         .uri(url)
                         .body(requestDto)
@@ -123,7 +127,7 @@ public class ProductControllerTest {
     @Test
     void 없는_상품을_조회하는_경우_404반환(){
         var url = "http://localhost:" + port + "/api/products/115";
-        Assertions.assertThatExceptionOfType(HttpClientErrorException.NotFound.class)
+        Assertions.assertThatExceptionOfType(NotFound.class)
                 .isThrownBy(
                         () ->
                                 restClient.get()
@@ -197,12 +201,25 @@ public class ProductControllerTest {
         requestDto.setName("카카오북Air(M4)");
         requestDto.setPrice(1235000);
         requestDto.setImageUrl("https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQIOLM8rb3eJVMzijKJcSS5NFVgVRkkGVUVJu8_X_CkcGB4WW-VJrtT9E2l-qgHI0N1bOwhojEe");
-
-        assertThrows(HttpClientErrorException.BadRequest.class,
+        assertThrows(BadRequest.class,
                 () -> restClient.put()
                         .uri(url)
                         .body(requestDto)
                         .retrieve()
                         .toEntity(Product.class));
     }
+
+    @Test
+    void 상품의_모든_옵션을_가져오는_기능() {
+        var url = "http://localhost:" + port + "/api/products/" + 9999 + "/options";
+        var response = restClient.get()
+                .uri(url)
+                .retrieve()
+                .toEntity(ProductOptionResponseDto.class);
+        assertAll(
+                () -> assertThat(response.getBody().getOptions().size()).isEqualTo(3),
+                () -> assertEquals(response.getStatusCode(), HttpStatus.OK)
+        );
+    }
+
 }

@@ -3,11 +3,13 @@ package gift.option.entity;
 import gift.product.entity.Product;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.util.Objects;
 
 @Entity
 public class Option {
@@ -25,7 +27,7 @@ public class Option {
     @Column(nullable = false)
     private Integer price;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id") //name_of_FK
     private Product product;
 
@@ -72,4 +74,14 @@ public class Option {
     public Product getProduct() {
         return product;
     }
+
+    //연관 관계 편의 메서드
+    public void setProduct(Product product){
+        if (Objects.nonNull(this.product)){
+            this.product.getOptions().remove(this);
+        }
+        this.product = product;
+        product.getOptions().add(this);
+    }
+
 }

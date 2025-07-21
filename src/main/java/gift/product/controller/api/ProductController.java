@@ -5,13 +5,14 @@ import gift.exception.MyException;
 import gift.exception.page.PageIndexException;
 import gift.option.dto.OptionRequestDto;
 import gift.option.service.OptionService;
-import gift.product.entity.Product;
 import gift.product.dto.ProductOptionRequestDto;
+import gift.product.dto.ProductOptionResponseDto;
 import gift.product.dto.ProductRequestDto;
+import gift.product.dto.ProductResponseDto;
+import gift.product.entity.Product;
 import gift.product.service.ProductService;
 import jakarta.validation.Valid;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,47 +45,53 @@ public class ProductController {
     //create
     @Transactional //상품은 추가되는데 옵션을 추가하는 과정에서 오류가 발생할 수 있음
     @PostMapping("/products")
-    public ResponseEntity<Product> createProduct(
+    public ResponseEntity<ProductOptionResponseDto> createProduct(
             @RequestBody @Valid ProductOptionRequestDto requestDto
     ) {
         Product product = productService.add(requestDto);
         for(OptionRequestDto option : requestDto.getOptions()){
-            optionService.createOptionByProduct(product, option);
+            optionService.createOptionByProductId(product.getId(), option);
         }
-        return new ResponseEntity<>(product, HttpStatus.CREATED);
+        return new ResponseEntity<>(new ProductOptionResponseDto(product, product.getOptions()), HttpStatus.CREATED);
     }
 
-    //read
-    //특정 상품을 조회(id)
+    //특정 상품의 옵션까지 조회
+    @GetMapping("/products/{id}/options")
+    public ResponseEntity<ProductOptionResponseDto> getProductOption(@PathVariable Long id) {
+        ProductOptionResponseDto product = productService.findProductOption(id);
+        return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
+    //특정 상품만을 조회
     @GetMapping("/products/{id}")
-    public ResponseEntity<Product> getProduct(@PathVariable Long id) {
-        Product product = productService.findOne(id);
+    public ResponseEntity<ProductResponseDto> getProduct(@PathVariable Long id) {
+        ProductResponseDto product = productService.findOne(id);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
     //read
     //전체 상품을 조회
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts(
+    public ResponseEntity<List<ProductResponseDto>> getProducts(
             @RequestParam(defaultValue = "0") int page, //현재 페이지
             @RequestParam(defaultValue = "5") int size //크기(몇개의 상품을 가져올지)
     ) {
         if(page < 0 || size < 0){
             throw new PageIndexException(ErrorCode.PAGE_INDEX_ERROR);
         }
-        Page<Product> productPage = productService.findAll(page, size);
+        Page<ProductResponseDto> productPage = productService.findAll(page, size);
         return new ResponseEntity<>(productPage.getContent(), HttpStatus.OK);
     }
 
     //update
     //상품 수정
     @PutMapping("/products/{id}")
-    public ResponseEntity<Product> modifyProduct(
+    public ResponseEntity<ProductResponseDto> modifyProduct(
             @RequestBody @Valid ProductRequestDto requestDto,
             @PathVariable Long id
     ) {
         productService.modify(id, requestDto);
-        Product modifiedProduct = productService.findOne(id);
+        ProductResponseDto modifiedProduct = productService.findOne(id);
         return new ResponseEntity<>(modifiedProduct, HttpStatus.OK);
     }
 

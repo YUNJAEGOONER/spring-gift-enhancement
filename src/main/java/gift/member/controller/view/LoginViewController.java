@@ -1,7 +1,7 @@
 package gift.member.controller.view;
 
-import gift.member.entity.Role;
 import gift.member.dto.MemberRequestDto;
+import gift.member.entity.Role;
 import gift.member.service.MemberService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

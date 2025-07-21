@@ -1,8 +1,8 @@
 package gift.member.controller.view;
 
 import gift.exception.ErrorCode;
-import gift.member.entity.Member;
 import gift.member.dto.MemberRequestDto;
+import gift.member.entity.Member;
 import gift.member.exception.MemberNotFoundException;
 import gift.member.service.MemberService;
 import jakarta.validation.Valid;

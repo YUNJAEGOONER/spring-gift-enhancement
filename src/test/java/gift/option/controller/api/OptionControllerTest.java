@@ -7,8 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import gift.option.dto.OptionRequestDto;
 import gift.option.dto.OptionResponseDto;
-import gift.product.entity.Product;
 import gift.product.dto.ProductOptionRequestDto;
+import gift.product.entity.Product;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -16,9 +16,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
+@Transactional
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class OptionControllerTest {
 
@@ -56,20 +58,6 @@ class OptionControllerTest {
                         .body(requestDto)
                         .retrieve()
                         .toEntity(OptionResponseDto.class));
-    }
-
-    @Test
-    void 상품의_모든_옵션을_가져오는_기능() {
-        Long productId = addProduct();
-        var url = "http://localhost:" + port + "/api/products/" + productId.toString() + "/options";
-        var response = restClient.get()
-                .uri(url)
-                .retrieve()
-                .toEntity(List.class);
-        assertAll(
-                () -> assertThat(response.getBody().size()).isEqualTo(2),
-                () -> assertEquals(response.getStatusCode(), HttpStatus.OK)
-        );
     }
 
     @Test

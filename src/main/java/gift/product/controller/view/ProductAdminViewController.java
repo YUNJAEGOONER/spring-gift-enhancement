@@ -2,9 +2,11 @@ package gift.product.controller.view;
 
 import gift.exception.ErrorCode;
 import gift.exception.page.PageIndexException;
-import gift.product.entity.Product;
 import gift.product.dto.ProductOptionRequestDto;
+import gift.product.dto.ProductOptionResponseDto;
 import gift.product.dto.ProductRequestDto;
+import gift.product.dto.ProductResponseDto;
+import gift.product.entity.Product;
 import gift.product.exception.ProductNotFoundException;
 import gift.product.service.ProductService;
 import jakarta.validation.Valid;
@@ -40,7 +42,7 @@ public class ProductAdminViewController {
         if(page < 0 || size < 0){
             throw new PageIndexException(ErrorCode.PAGE_INDEX_ERROR);
         }
-        Page<Product> productList = productService.findAll(page, size);
+        Page<ProductResponseDto> productList = productService.findAll(page, size);
         model.addAttribute("productList", productList);
         return "/yjshop/admin/product/home";
     }
@@ -63,7 +65,7 @@ public class ProductAdminViewController {
         if(id == null){
             return "redirect:/view/admin/products";
         }
-        Product product = productService.findOne(id);
+        ProductResponseDto product = productService.findOne(id);
         model.addAttribute("product", product);
         return "/yjshop/admin/product/productinfo";
     }
@@ -98,9 +100,9 @@ public class ProductAdminViewController {
             @PathVariable Long id,
             Model model
     ) {
-        Product product = productService.findOne(id);
+        ProductOptionResponseDto product = productService.findProductOption(id);
         model.addAttribute("product", product);
-        model.addAttribute("productRequestDto", new ProductOptionRequestDto());
+        model.addAttribute("productRequestDto", new ProductRequestDto());
         return "/yjshop/admin/product/modifyform";
     }
 
@@ -113,13 +115,24 @@ public class ProductAdminViewController {
             Model model
     ) {
         if(bindingResult.hasErrors()){
-            Product product = productService.findOne(id);
+            ProductResponseDto product = productService.findOne(id);
             model.addAttribute("product", product);
             return "/yjshop/admin/product/modifyform";
         }
         productService.modify(id, requestDto);
         return "redirect:/view/admin/products";
     }
+
+    //옵션 수정 폼 불러오기
+    @GetMapping("/products/{id}/options/edit")
+    public String optionForm(@PathVariable Long id, Model model)
+    {
+        ProductOptionResponseDto product = productService.findProductOption(id);
+        model.addAttribute("product", product);
+        model.addAttribute("productRequestDto", new ProductRequestDto());
+        return "/yjshop/admin/product/optionmodify";
+    }
+
 
     @ExceptionHandler(ProductNotFoundException.class)
     public String productNotFound(ProductNotFoundException e, Model model) {

@@ -2,7 +2,8 @@ package gift.product.controller.view;
 
 import gift.exception.ErrorCode;
 import gift.exception.page.PageIndexException;
-import gift.product.entity.Product;
+import gift.product.dto.ProductOptionResponseDto;
+import gift.product.dto.ProductResponseDto;
 import gift.product.service.ProductService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -31,19 +32,19 @@ public class ProductViewController {
         if(page < 0 || size < 0){
             throw new PageIndexException(ErrorCode.PAGE_INDEX_ERROR);
         }
-        Page<Product> productList = productService.findAll(page, size);
+        Page<ProductResponseDto> productList = productService.findAll(page, size);
         model.addAttribute("productList", productList);
         return "/yjshop/user/home";
     }
 
-    //특정 상품을 조회(id)
+    //특정 상품을 조회
     @GetMapping("/products/info")
     public String getProduct(
             @RequestParam(required = false) Long id,
             Model model
     ) {
-        Product product = productService.findOne(id);
-        model.addAttribute("product", product);
+        ProductOptionResponseDto productOption = productService.findProductOption(id);
+        model.addAttribute("product", productOption);
         return "/yjshop/user/productinfo";
     }
 
@@ -62,7 +63,7 @@ public class ProductViewController {
         if(page < 0 || size < 0){
             throw new PageIndexException(ErrorCode.PAGE_INDEX_ERROR);
         }
-        Page<Product> product = productService.searchProduct(name, page, size);
+        Page<ProductResponseDto> product = productService.searchProduct(name, page, size);
         model.addAttribute("productList", product);
         model.addAttribute("searchkeyword", name);
         return "/yjshop/user/search";

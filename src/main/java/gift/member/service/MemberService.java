@@ -2,8 +2,8 @@ package gift.member.service;
 
 import gift.exception.ErrorCode;
 import gift.jwt.exception.LoginError;
-import gift.member.entity.Member;
 import gift.member.dto.MemberRequestDto;
+import gift.member.entity.Member;
 import gift.member.exception.MemberNotFoundException;
 import gift.member.exception.UnavailableEmailException;
 import gift.member.repository.MemberRepository;
