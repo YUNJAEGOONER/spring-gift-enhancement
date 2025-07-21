@@ -1,14 +1,14 @@
 package gift.wishlist.service;
 
 import gift.exception.ErrorCode;
-import gift.member.Member;
+import gift.member.entity.Member;
 import gift.member.exception.MemberNotFoundException;
 import gift.member.repository.MemberRepository;
-import gift.option.Option;
+import gift.option.entity.Option;
 import gift.option.repository.OptionRepository;
-import gift.product.Product;
+import gift.product.entity.Product;
 import gift.product.exception.ProductNotFoundException;
-import gift.wishlist.WishList;
+import gift.wishlist.entity.WishList;
 import gift.wishlist.dto.WishRequestDto;
 import gift.wishlist.dto.WishResponseDto;
 import gift.wishlist.exception.WishNotFoundException;

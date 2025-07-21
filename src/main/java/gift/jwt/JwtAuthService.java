@@ -2,7 +2,7 @@ package gift.jwt;
 
 import gift.exception.ErrorCode;
 import gift.jwt.exception.JWTAuthException;
-import gift.member.Role;
+import gift.member.entity.Role;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;

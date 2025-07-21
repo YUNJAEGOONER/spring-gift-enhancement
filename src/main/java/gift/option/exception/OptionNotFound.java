@@ -5,7 +5,7 @@ import gift.exception.MyException;
 
 public class OptionNotFound extends MyException {
 
-  public OptionNotFound(ErrorCode errorCode) {
-    super(errorCode);
-  }
+    public OptionNotFound(ErrorCode errorCode) {
+        super(errorCode);
+    }
 }

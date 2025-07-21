@@ -2,7 +2,7 @@ package gift.product.controller.view;
 
 import gift.exception.ErrorCode;
 import gift.exception.page.PageIndexException;
-import gift.product.Product;
+import gift.product.entity.Product;
 import gift.product.dto.ProductOptionRequestDto;
 import gift.product.dto.ProductRequestDto;
 import gift.product.exception.ProductNotFoundException;

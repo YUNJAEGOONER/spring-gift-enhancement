@@ -3,7 +3,7 @@ package gift.member.controller.api;
 import gift.exception.MyException;
 import gift.jwt.JwtAuthService;
 import gift.jwt.JwtResponseDto;
-import gift.member.Member;
+import gift.member.entity.Member;
 import gift.member.dto.MemberRequestDto;
 import gift.member.service.MemberService;
 import jakarta.servlet.http.Cookie;

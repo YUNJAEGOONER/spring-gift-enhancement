@@ -1,4 +1,4 @@
-package gift.member;
+package gift.member.entity;
 
 public enum Role {
     USER,

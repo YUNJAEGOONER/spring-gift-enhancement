@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gift.exception.ErrorCode;
 import gift.jwt.JwtAuthService;
 import gift.jwt.exception.LoginError;
-import gift.member.Member;
+import gift.member.entity.Member;
 import gift.member.service.MemberService;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;

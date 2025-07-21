@@ -2,7 +2,7 @@ package gift.product.controller.view;
 
 import gift.exception.ErrorCode;
 import gift.exception.page.PageIndexException;
-import gift.product.Product;
+import gift.product.entity.Product;
 import gift.product.service.ProductService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;

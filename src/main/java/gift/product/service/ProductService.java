@@ -1,7 +1,7 @@
 package gift.product.service;
 
 import gift.exception.ErrorCode;
-import gift.product.Product;
+import gift.product.entity.Product;
 import gift.product.dto.ProductOptionRequestDto;
 import gift.product.dto.ProductRequestDto;
 import gift.product.exception.ProductNotFoundException;

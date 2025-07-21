@@ -5,7 +5,7 @@ import gift.exception.MyException;
 import gift.exception.page.PageIndexException;
 import gift.option.dto.OptionRequestDto;
 import gift.option.service.OptionService;
-import gift.product.Product;
+import gift.product.entity.Product;
 import gift.product.dto.ProductOptionRequestDto;
 import gift.product.dto.ProductRequestDto;
 import gift.product.service.ProductService;
@@ -34,10 +34,11 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @Autowired private OptionService optionService;
+    private final OptionService optionService;
 
-    public ProductController(ProductService productService){
+    public ProductController(ProductService productService, OptionService optionService){
         this.productService = productService;
+        this.optionService = optionService;
     }
 
     //create

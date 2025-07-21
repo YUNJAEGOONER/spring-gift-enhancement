@@ -3,7 +3,7 @@ package gift.member.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import gift.member.Member;
+import gift.member.entity.Member;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

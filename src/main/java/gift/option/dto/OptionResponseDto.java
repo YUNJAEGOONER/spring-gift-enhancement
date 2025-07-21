@@ -5,4 +5,6 @@ public record OptionResponseDto(
         String optionName,
         Integer quantity,
         Integer price
-){ }
+) {
+
+}

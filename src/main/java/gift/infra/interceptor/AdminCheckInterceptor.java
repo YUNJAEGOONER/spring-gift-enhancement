@@ -3,7 +3,7 @@ package gift.infra.interceptor;
 import gift.exception.ErrorCode;
 import gift.jwt.JwtAuthService;
 import gift.jwt.exception.JWTAuthException;
-import gift.member.Role;
+import gift.member.entity.Role;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;

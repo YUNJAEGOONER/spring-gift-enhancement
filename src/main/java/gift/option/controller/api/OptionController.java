@@ -4,6 +4,7 @@ import gift.exception.MyException;
 import gift.option.dto.OptionRequestDto;
 import gift.option.dto.OptionResponseDto;
 import gift.option.service.OptionService;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,46 +23,51 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class OptionController {
 
-    @Autowired OptionService optionService;
+    private final OptionService optionService;
+
+    public OptionController(OptionService optionService) {
+        this.optionService = optionService;
+    }
 
     @PostMapping("/options/{productId}")
     public ResponseEntity<OptionResponseDto> createOption(
             @PathVariable Long productId,
-            @RequestBody OptionRequestDto optionRequestDto
-    ){
+            @Valid @RequestBody OptionRequestDto optionRequestDto
+    ) {
         OptionResponseDto responseDto = optionService.createOptionByProductId(productId, optionRequestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
     //상품아이디를 통해 특정 상품의 옵션을 모두 조회
     @GetMapping("/products/{productId}/options")
-    public ResponseEntity<List<OptionResponseDto>> getAllProductOptions(@PathVariable Long productId){
+    public ResponseEntity<List<OptionResponseDto>> getAllProductOptions(@PathVariable Long productId) {
         return ResponseEntity.ok(optionService.getOptionByProduct(productId));
     }
 
     //optionId를 통해 특정 옵션을 조회
     @GetMapping("/options/{optionId}")
-    public ResponseEntity<OptionResponseDto> getOption(@PathVariable Long optionId){
+    public ResponseEntity<OptionResponseDto> getOption(@PathVariable Long optionId) {
         return ResponseEntity.ok(optionService.findOne(optionId));
     }
 
     @PutMapping("/options/{optionId}")
     public ResponseEntity<OptionResponseDto> editOption(
             @PathVariable Long optionId,
-            @RequestBody OptionRequestDto optionRequestDto
-    ){
+            @Valid @RequestBody OptionRequestDto optionRequestDto
+    ) {
         return ResponseEntity.ok(optionService.updateOption(optionId, optionRequestDto));
     }
 
     @DeleteMapping("/options/{optionId}")
-    public ResponseEntity<Void> removeOption(@PathVariable Long optionId){
-        optionService.removeOtion(optionId);
+    public ResponseEntity<Void> removeOption(@PathVariable Long optionId) {
+        optionService.removeOption(optionId);
         return ResponseEntity.noContent().build();
     }
 
     @ExceptionHandler(MyException.class)
-    public ResponseEntity<String> MemberControllerExceptionHandler(MyException e){
-        return ResponseEntity.status(e.getErrorCode().getStatusCode()).body(e.getErrorCode().getMessage());
+    public ResponseEntity<String> MemberControllerExceptionHandler(MyException e) {
+        return ResponseEntity.status(e.getErrorCode().getStatusCode())
+                .body(e.getErrorCode().getMessage());
     }
 
 }

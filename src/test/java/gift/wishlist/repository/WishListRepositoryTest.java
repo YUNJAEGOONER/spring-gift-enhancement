@@ -2,13 +2,13 @@ package gift.wishlist.repository;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import gift.member.Member;
+import gift.member.entity.Member;
 import gift.member.repository.MemberRepository;
-import gift.option.Option;
+import gift.option.entity.Option;
 import gift.option.repository.OptionRepository;
-import gift.product.Product;
+import gift.product.entity.Product;
 import gift.product.repository.ProductRepository;
-import gift.wishlist.WishList;
+import gift.wishlist.entity.WishList;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;

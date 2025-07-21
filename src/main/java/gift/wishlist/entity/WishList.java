@@ -1,7 +1,7 @@
-package gift.wishlist;
+package gift.wishlist.entity;
 
-import gift.member.Member;
-import gift.option.Option;
+import gift.member.entity.Member;
+import gift.option.entity.Option;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

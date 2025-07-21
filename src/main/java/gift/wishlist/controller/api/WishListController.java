@@ -2,7 +2,7 @@ package gift.wishlist.controller.api;
 
 import gift.exception.MyException;
 import gift.infra.LoggedInMember;
-import gift.member.Member;
+import gift.member.entity.Member;
 import gift.wishlist.dto.WishRequestDto;
 import gift.wishlist.dto.WishResponseDto;
 import gift.wishlist.service.WishListService;

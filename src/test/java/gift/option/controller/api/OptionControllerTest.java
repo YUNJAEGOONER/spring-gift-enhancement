@@ -1,4 +1,4 @@
-package gift.productoption.controller.api;
+package gift.option.controller.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import gift.option.dto.OptionRequestDto;
 import gift.option.dto.OptionResponseDto;
-import gift.product.Product;
+import gift.product.entity.Product;
 import gift.product.dto.ProductOptionRequestDto;
 import java.util.ArrayList;
 import java.util.List;

@@ -5,7 +5,7 @@ import gift.exception.MyException;
 
 public class UnavailableOptionName extends MyException {
 
-  public UnavailableOptionName(ErrorCode errorCode) {
-    super(errorCode);
-  }
+    public UnavailableOptionName(ErrorCode errorCode) {
+        super(errorCode);
+    }
 }

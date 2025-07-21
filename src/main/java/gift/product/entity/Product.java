@@ -1,4 +1,4 @@
-package gift.product;
+package gift.product.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
