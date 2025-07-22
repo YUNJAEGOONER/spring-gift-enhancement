@@ -20,8 +20,8 @@
 
       /* 검색폼 내부 input, 버튼 스타일 (필요하면) */
       #search input[type="number"] {
-        flex-grow: 1;        /* 입력창이 가로 공간 대부분 차지 */
-        max-width: 200px;    /* 최대 크기 제한 */
+        flex-grow: 1; /* 입력창이 가로 공간 대부분 차지 */
+        max-width: 200px; /* 최대 크기 제한 */
         padding: 6px 10px;
         border: 1px solid #ccc;
         border-radius: 4px;
@@ -44,7 +44,7 @@
       }
 
     </style>
-    <form id = "search" th:action="@{/view/admin/products/search}" method="get">
+    <form id="search" th:action="@{/view/admin/products/search}" method="get">
       <input type="number" name="id" placeholder="상품 아이디 입력">
       <input type="submit" value="상품 검색하기">
     </form>
@@ -83,7 +83,7 @@
       <td th:text="${product.id}"></td>
       <td th:text="${product.name}"></td>
       <td th:text="${product.price}"></td>
-      <td><img th:src="${product.imageUrl}" width="100px" alt = "상품 이미지"></td>
+      <td><img th:src="${product.imageUrl}" width="100px" alt="상품 이미지"></td>
 
 
       <td>
@@ -91,6 +91,7 @@
           <button type="submit">상품 삭제</button>
         </form>
         <button th:onclick="|location.href='@{/view/admin/products/modify/{id}(id=${product.id})}'|">상품 수정</button>
+        <button th:onclick="|location.href='@{/view/admin/products/{id}/options/edit(id=${product.id})}'|">옵션 수정</button>
       </td>
 
 

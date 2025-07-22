@@ -1,9 +1,9 @@
 package gift.exception;
 
-import gift.exception.member.JWTAuthException;
-import gift.exception.member.LoginError;
-import gift.exception.member.MemberNotFoundException;
 import gift.exception.page.PageIndexException;
+import gift.jwt.exception.JWTAuthException;
+import gift.jwt.exception.LoginError;
+import gift.member.exception.MemberNotFoundException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;

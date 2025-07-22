@@ -1,6 +1,6 @@
 package gift.infra.filter;
 
-import gift.exception.member.LoginError;
+import gift.jwt.exception.LoginError;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
