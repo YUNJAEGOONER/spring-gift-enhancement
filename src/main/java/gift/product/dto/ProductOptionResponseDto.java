@@ -16,6 +16,9 @@ public class ProductOptionResponseDto {
 
     private String imageUrl;
 
+    public ProductOptionResponseDto() {
+    }
+
     private List<OptionResponseDto> options = new ArrayList<>();
 
     public ProductOptionResponseDto(Product product, List<Option> optionList) {

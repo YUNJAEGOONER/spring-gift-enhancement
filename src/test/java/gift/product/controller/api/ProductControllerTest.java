@@ -211,15 +211,39 @@ public class ProductControllerTest {
 
     @Test
     void 상품의_모든_옵션을_가져오는_기능() {
-        var url = "http://localhost:" + port + "/api/products/" + 9999 + "/options";
+        Long productId = addProduct();
+        var url = "http://localhost:" + port + "/api/products/" + productId + "/options";
         var response = restClient.get()
                 .uri(url)
                 .retrieve()
                 .toEntity(ProductOptionResponseDto.class);
         assertAll(
-                () -> assertThat(response.getBody().getOptions().size()).isEqualTo(3),
+                () -> assertThat(response.getBody().getOptions().size()).isEqualTo(2),
                 () -> assertEquals(response.getStatusCode(), HttpStatus.OK)
         );
+    }
+
+    public Long addProduct() {
+        var url = "http://localhost:" + port + "/api/products";
+        ProductOptionRequestDto requestDto = new ProductOptionRequestDto();
+
+        requestDto.setName("애플워치울트라");
+        requestDto.setPrice(340000);
+        requestDto.setImageUrl(
+                "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRzZTIOEqeEMHNP4zFNRWCB_BuBv22q881TH1fY3GShPKuJqNBxh8HIELZcTjj7FhvSqpwSleJj");
+
+        List<OptionRequestDto> options = new ArrayList<>();
+        options.add(new OptionRequestDto("44mm", 999, 0));
+        options.add(new OptionRequestDto("46mm", 100, 15000));
+        requestDto.setOptions(options);
+
+        return restClient.post()
+                .uri(url)
+                .body(requestDto)
+                .retrieve()
+                .toEntity(Product.class)
+                .getBody()
+                .getId();
     }
 
 }
